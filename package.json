@@ -1,0 +1,25 @@
+{
+  "name": "account-activity-monitoring-password-sharing-detection-system",
+  "version": "1.0.0",
+  "description": "**Scalable AWS Web Application with Monitoring & Automation**",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a-Akanksha-dixit/Account-Activity-Monitoring-Password-Sharing-Detection-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/a-Akanksha-dixit/Account-Activity-Monitoring-Password-Sharing-Detection-System/issues"
+  },
+  "homepage": "https://github.com/a-Akanksha-dixit/Account-Activity-Monitoring-Password-Sharing-Detection-System#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
