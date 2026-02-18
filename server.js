@@ -1,99 +1,56 @@
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import pool from './db.js';
-import mysql from 'mysql2/promise';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.json());
 const PORT = process.env.PORT || 3000;
 dotenv.config();
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// app.use(express.static(path.join(__dirname, 'public'))); // serve static files from the 'public' directory
 
-// serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Routes
+import dashboardRoutes from './routes/dashboard.js';
+import loginRoutes from './routes/login.js';
+import apiRoutes from './routes/api.js';
+
+app.use('/', dashboardRoutes);
+app.use('/login', loginRoutes);
+app.use('/api', apiRoutes);
 
 // health check (for EB)
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Server is healthy' });
 });
 
+// 404 handler
+app.use((req, res) => {
+    res.status(404).send('<h1`>404 Not Found</h1><p>The page you are looking for does not exist.</p>');
+});
 
+// Error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('<h1>500 Internal Server Error</h1><p>Something went wrong on the server.</p>');
+});
 
-app.get('/create-db', async (req, res) => {
+// Initialize database connection
+import { initializeDatabase } from './config/database.js';
+
+const startServer = async () => {
   try {
-    // simple protection key (change this value)
-    const secret = req.query.key;
-    if (secret !== "mySuperSecret123") {
-      return res.status(403).json({ error: "Unauthorized" });
-    }
-
-    const connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD
-      // ⚠️ no database selected
-    });
-
-    await connection.query(`CREATE DATABASE IF NOT EXISTS app_database`);
-
-    await connection.end();
-
-    res.json({ success: true, message: "Database created or already exists" });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: error.message });
+    await initializeDatabase();
+    console.log('✅ Database connected');
+  } catch (err) {
+    console.error('❌ Failed to initialize database:', err.message);
+    console.log('⚠️ Starting server without DB connection');
   }
-});
+  app.listen(PORT, () => {
+    console.log(`🚀 Security Dashboard running on port ${PORT}`);
+  });
+};
+
+startServer();
 
 
-// Test DB route
-app.get('/check-db', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT 1 + 1 AS result');
-    res.json({
-      success: true,
-      message: "Database connected",
-      result: rows[0].result
-    });
-  } catch (error) {
-    console.error("DB Error:", error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
-
-
-// Insert login record (for your project)
-app.post('/login', (req, res) => {
-  const { username } = req.body;
-  const ip = req.ip;
-
-  db.query(
-    'INSERT INTO login_logs (username, ip_address) VALUES (?, ?)',
-    [username, ip],
-    (err) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ message: "Login recorded successfully" });
-    }
-  );
-});
-
-
-// Root route
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})

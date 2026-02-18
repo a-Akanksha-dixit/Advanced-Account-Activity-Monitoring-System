@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureWatch — Account Misuse Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050810;
+      --panel:     #0b0f1e;
+      --border:    #1a2240;
+      --accent:    #00e5ff;
+      --danger:    #ff3b5c;
+      --warn:      #ffb300;
+      --success:   #00e676;
+      --muted:     #3a4a6a;
+      --text:      #c8d8f0;
+      --text-dim:  #5a7099;
+      --glow:      0 0 20px rgba(0,229,255,0.15);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex; align-items: center; justify-content: center;
+      animation: pulse-icon 3s ease-in-out infinite;
+    }
+    @keyframes pulse-icon {
+      0%, 100% { box-shadow: 0 0 8px var(--accent); }
+      50%       { box-shadow: 0 0 24px var(--accent), 0 0 48px rgba(0,229,255,0.3); }
+    }
+    .logo-text {
+      font-size: 20px; font-weight: 700; letter-spacing: 4px;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; }
+
+    nav a {
+      color: var(--text-dim); text-decoration: none; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px;
+      border: 1px solid transparent; border-radius: 2px;
+      transition: all 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--accent); border-color: var(--accent);
+      background: rgba(0,229,255,0.05);
+    }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    /* Live indicator */
+    .live-badge {
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--success); letter-spacing: 2px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--success);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    .section-title {
+      font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── Stat cards ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .stat-card:hover { border-color: var(--accent); box-shadow: var(--glow); }
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    }
+    .stat-card.blue::before   { background: var(--accent); }
+    .stat-card.red::before    { background: var(--danger); }
+    .stat-card.yellow::before { background: var(--warn); }
+    .stat-card.green::before  { background: var(--success); }
+
+    .stat-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 10px;
+    }
+    .stat-value {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 40px; line-height: 1;
+      color: #fff;
+    }
+    .stat-card.red    .stat-value { color: var(--danger); }
+    .stat-card.yellow .stat-value { color: var(--warn); }
+    .stat-card.green  .stat-value { color: var(--success); }
+
+    .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+
+    /* ── Two-column layout ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── Panel ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-title {
+      font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent); font-weight: 600;
+    }
+    .panel-body { padding: 16px 20px; }
+
+    /* ── Table ── */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-dim); text-align: left; padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 9px 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; color: var(--text);
+      border-bottom: 1px solid rgba(26,34,64,0.5);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(0,229,255,0.03); }
+
+    .badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 2px; font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; font-weight: 600;
+    }
+    .badge-success { background: rgba(0,230,118,0.15); color: var(--success); }
+    .badge-danger  { background: rgba(255,59,92,0.15);  color: var(--danger); }
+    .badge-warn    { background: rgba(255,179,0,0.15);  color: var(--warn); }
+
+    /* Risk score bar */
+    .risk-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .risk-bar {
+      flex: 1; height: 4px; background: var(--border); border-radius: 2px;
+      overflow: hidden;
+    }
+    .risk-fill {
+      height: 100%; border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+    .risk-fill.low    { background: var(--success); }
+    .risk-fill.medium { background: var(--warn); }
+    .risk-fill.high   { background: var(--danger); }
+    .risk-num { font-family: 'Share Tech Mono', monospace; font-size: 11px; min-width: 24px; }
+
+    /* ── Upload panel ── */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 4px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag {
+      border-color: var(--accent);
+      background: rgba(0,229,255,0.04);
+    }
+    .upload-zone input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .upload-icon {
+      font-size: 32px; margin-bottom: 10px; color: var(--muted);
+    }
+    .upload-text { color: var(--text-dim); font-size: 13px; }
+    .upload-text strong { color: var(--accent); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px;
+      border: 1px solid var(--accent); border-radius: 2px;
+      background: rgba(0,229,255,0.08); color: var(--accent);
+      font-family: 'Rajdhani', sans-serif; font-size: 13px;
+      font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn:hover { background: rgba(0,229,255,0.18); box-shadow: var(--glow); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn.danger { border-color: var(--danger); color: var(--danger); background: rgba(255,59,92,0.08); }
+
+    #upload-status {
+      margin-top: 12px; padding: 10px 14px;
+      border-radius: 2px; font-size: 13px; display: none;
+    }
+    #upload-status.ok  { background: rgba(0,230,118,0.1); border: 1px solid var(--success); color: var(--success); }
+    #upload-status.err { background: rgba(255,59,92,0.1);  border: 1px solid var(--danger);  color: var(--danger); }
+
+    /* Pipeline viz */
+    .pipeline {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; padding: 16px 0;
+      flex-wrap: wrap;
+    }
+    .pipe-step {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      min-width: 80px;
+    }
+    .pipe-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: all 0.3s;
+    }
+    .pipe-icon.active { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,229,255,0.3); }
+    .pipe-icon.done   { border-color: var(--success); background: rgba(0,230,118,0.1); }
+    .pipe-label { font-size: 9px; letter-spacing: 1px; color: var(--text-dim); text-align: center; }
+    .pipe-arrow { font-size: 16px; color: var(--muted); padding: 0 4px; margin-bottom: 16px; }
+
+    /* Flags display */
+    .flags-list { display: flex; flex-wrap: wrap; gap: 4px; }
+    .flag-tag {
+      background: rgba(255,179,0,0.1); border: 1px solid rgba(255,179,0,0.3);
+      color: var(--warn); font-size: 10px; padding: 2px 6px; border-radius: 2px;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--panel); border: 1px solid var(--accent);
+      color: var(--accent); padding: 12px 20px; border-radius: 4px;
+      font-size: 13px; letter-spacing: 1px;
+      box-shadow: 0 0 20px rgba(0,229,255,0.2);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s ease;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    .empty-state {
+      text-align: center; padding: 40px 20px;
+      color: var(--text-dim); font-size: 13px;
+    }
+    .empty-state .emoji { font-size: 32px; margin-bottom: 10px; }
+
+    .refresh-btn {
+      background: none; border: 1px solid var(--border); color: var(--text-dim);
+      padding: 4px 12px; border-radius: 2px; cursor: pointer; font-size: 11px;
+      letter-spacing: 1px; transition: all 0.2s;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .mono { font-family: 'Share Tech Mono', monospace; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon"></div>
+    <div>
+      <div class="logo-text">SecureWatch</div>
+      <div class="logo-sub">Account Misuse Detection System</div>
+    </div>
+  </div>
+  <nav class="nav-links">
+    <a href="/" class="active">Dashboard</a>
+    <a href="/login">Demo Login</a>
+  </nav>
+  <div class="live-badge"><div class="live-dot"></div> LIVE MONITORING</div>
+</header>
+
+<main>
+
+  <!-- Stat Cards -->
+  <div class="section-title">System Overview</div>
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-label">Total Login Events</div>
+      <div class="stat-value" id="stat-total">—</div>
+      <div class="stat-sub">All time</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">Failed Attempts</div>
+      <div class="stat-value" id="stat-failed">—</div>
+      <div class="stat-sub">All time</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Suspicious Accounts</div>
+      <div class="stat-value" id="stat-suspicious">—</div>
+      <div class="stat-sub">Flagged by system</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Active Users</div>
+      <div class="stat-value" id="stat-users">—</div>
+      <div class="stat-sub">Unique identifiers</div>
+    </div>
+  </div>
+
+  <!-- Suspicious Accounts + Login Feed -->
+  <div class="section-title">Threat Intelligence</div>
+  <div class="grid-2">
+
+    <!-- Suspicious Accounts -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">⚠ Suspicious Accounts</span>
+        <button class="refresh-btn" onclick="loadSuspicious()">↻ Refresh</button>
+      </div>
+      <div class="panel-body" style="padding: 0;">
+        <table class="data-table" id="suspicious-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Risk Score</th>
+              <th>Flags</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="suspicious-body">
+            <tr><td colspan="4"><div class="empty-state"><div class="emoji">🔍</div>Loading...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Login Feed -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">📡 Live Login Feed</span>
+        <button class="refresh-btn" onclick="loadRecentLogins()">↻ Refresh</button>
+      </div>
+      <div class="panel-body" style="padding: 0;">
+        <table class="data-table">
+          <thead>
+            <tr><th>User</th><th>IP</th><th>Location</th><th>Status</th><th>Time</th></tr>
+          </thead>
+          <tbody id="logins-body">
+            <tr><td colspan="5"><div class="empty-state"><div class="emoji">📡</div>Loading...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 Upload + Pipeline -->
+  <div class="section-title">S3 → SQS → Lambda Pipeline</div>
+  <div class="grid-2">
+
+    <!-- Upload Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">📁 Upload Log File to S3</span>
+      </div>
+      <div class="panel-body">
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept=".json,.log,.txt" />
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">Drop a <strong>.json / .log / .txt</strong> file here<br/>or click to browse</div>
+        </div>
+        <div style="margin-top: 14px; display: flex; gap: 10px; align-items: center;">
+          <button class="btn" id="upload-btn" onclick="uploadFile()">⬆ Upload to S3</button>
+          <button class="btn" onclick="generateSampleLog()">🎲 Generate Sample Log</button>
+        </div>
+        <div id="upload-status"></div>
+      </div>
+    </div>
+
+    <!-- Pipeline Visualizer -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">⚡ Event Pipeline Status</span>
+      </div>
+      <div class="panel-body">
+        <div class="pipeline" id="pipeline">
+          <div class="pipe-step">
+            <div class="pipe-icon" id="pipe-s3">🪣</div>
+            <div class="pipe-label">S3 PUBLIC<br/>BUCKET</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-icon" id="pipe-sqs">📨</div>
+            <div class="pipe-label">SQS<br/>QUEUE</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-icon" id="pipe-lambda">λ</div>
+            <div class="pipe-label">LAMBDA<br/>FUNCTION</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-icon" id="pipe-private">🔒</div>
+            <div class="pipe-label">S3 PRIVATE<br/>REPORT</div>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-icon" id="pipe-dash">📊</div>
+            <div class="pipe-label">DASHBOARD<br/>UPDATE</div>
+          </div>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px;">
+          <div class="section-title" style="margin-bottom: 8px;">Architecture Notes</div>
+          <div style="font-size: 12px; color: var(--text-dim); line-height: 1.7;">
+            1. Upload triggers S3 event notification to SQS<br/>
+            2. Lambda polls SQS, reads the file, detects misuse<br/>
+            3. Lambda writes processed report to private S3<br/>
+            4. Dashboard reads from private S3 via <span class="mono">/api/suspicious</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+  // ── Data loading ──────────────────────────────────────
+  async function loadStats() {
+    try {
+      const r = await fetch('/api/stats');
+      const d = await r.json();
+      document.getElementById('stat-total').textContent     = d.totalLogins   ?? '—';
+      document.getElementById('stat-failed').textContent    = d.failedLogins  ?? '—';
+      document.getElementById('stat-suspicious').textContent = d.suspiciousAcc ?? '—';
+      document.getElementById('stat-users').textContent     = d.activeUsers   ?? '—';
+    } catch(e) { console.warn('Stats load failed', e); }
+  }
+
+  async function loadRecentLogins() {
+    const tbody = document.getElementById('logins-body');
+    try {
+      const r = await fetch('/api/recent-logins');
+      const rows = await r.json();
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="emoji">🔒</div>No login events yet — try the <a href="/login" style="color:var(--accent)">demo login page</a></div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(row => `
+        <tr>
+          <td>${escHtml(row.username)}</td>
+          <td class="mono" style="color:var(--text-dim)">${escHtml(row.ip_address)}</td>
+          <td>${escHtml(row.city || '?')}, ${escHtml(row.country || '?')}</td>
+          <td><span class="badge badge-${row.status === 'success' ? 'success' : 'danger'}">${row.status}</span></td>
+          <td class="mono" style="font-size:11px; color:var(--text-dim)">${row.logged_at}</td>
+        </tr>
+      `).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="5" style="color:var(--danger); text-align:center; padding:20px;">Failed to load — check DB connection</td></tr>';
+    }
+  }
+
+  async function loadSuspicious() {
+    const tbody = document.getElementById('suspicious-body');
+    try {
+      const r = await fetch('/api/suspicious');
+      const res = await r.json();
+      const rows = res.data || [];
+      const source = res.source || 'unknown';
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><div class="emoji">✅</div>No suspicious accounts detected yet</div></td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(row => {
+        const score = row.risk_score || 0;
+        const flags = typeof row.flags === 'string' ? JSON.parse(row.flags || '[]') : (row.flags || []);
+        const level = score >= 70 ? 'high' : score >= 40 ? 'medium' : 'low';
+        const pct = Math.min(score, 100);
+        return `
+          <tr>
+            <td style="font-weight:600">${escHtml(row.username)}</td>
+            <td>
+              <div class="risk-bar-wrap">
+                <div class="risk-bar"><div class="risk-fill ${level}" style="width:${pct}%"></div></div>
+                <span class="risk-num" style="color:var(--${level === 'high' ? 'danger' : level === 'medium' ? 'warn' : 'success'})">${score}</span>
+              </div>
+            </td>
+            <td><div class="flags-list">${flags.map(f => `<span class="flag-tag">${escHtml(f)}</span>`).join('')}</div></td>
+            <td><span class="badge ${source === 'lambda-processed' ? 'badge-success' : 'badge-warn'}">${source === 'lambda-processed' ? 'λ Lambda' : 'RDS'}</span></td>
+          </tr>
+        `;
+      }).join('');
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="4" style="color:var(--danger);text-align:center;padding:20px;">Error loading data</td></tr>';
+    }
+  }
+
+  // ── File Upload ───────────────────────────────────────
+  let selectedFile = null;
+
+  document.getElementById('file-input').addEventListener('change', function() {
+    if (this.files[0]) {
+      selectedFile = this.files[0];
+      document.querySelector('.upload-text').innerHTML =
+        `<strong style="color:var(--success)">✔ ${selectedFile.name}</strong><br/>${(selectedFile.size/1024).toFixed(1)} KB selected`;
+    }
+  });
+
+  const zone = document.getElementById('upload-zone');
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      selectedFile = file;
+      document.querySelector('.upload-text').innerHTML =
+        `<strong style="color:var(--success)">✔ ${file.name}</strong><br/>${(file.size/1024).toFixed(1)} KB ready`;
+    }
+  });
+
+  function generateSampleLog() {
+    const users = ['alice', 'bob', 'charlie', 'diana', 'eve'];
+    const sampleLog = {
+      generated_at: new Date().toISOString(),
+      source: 'SecureWatch Dashboard',
+      events: users.map(u => ({
+        username: u,
+        ips: Array.from({length: Math.ceil(Math.random()*3)}, () =>
+          `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
+        ),
+        failed_attempts: Math.floor(Math.random() * 8),
+        countries: ['US','RU','CN','DE','BR'].slice(0, Math.ceil(Math.random()*3)),
+        last_seen: new Date(Date.now() - Math.random()*86400000).toISOString(),
+      }))
+    };
+    const blob = new Blob([JSON.stringify(sampleLog, null, 2)], { type: 'application/json' });
+    selectedFile = new File([blob], `security-log-${Date.now()}.json`, { type: 'application/json' });
+    document.querySelector('.upload-text').innerHTML =
+      `<strong style="color:var(--success)">✔ ${selectedFile.name}</strong><br/>Sample log generated & ready to upload`;
+    showToast('Sample log generated!');
+  }
+
+  async function uploadFile() {
+    if (!selectedFile) { showToast('Please select or generate a file first'); return; }
+    const btn = document.getElementById('upload-btn');
+    const status = document.getElementById('upload-status');
+    btn.disabled = true;
+    btn.textContent = '⏳ Uploading...';
+    status.style.display = 'none';
+
+    // Animate pipeline
+    animatePipeline();
+
+    const formData = new FormData();
+    formData.append('logfile', selectedFile);
+
+    try {
+      const r = await fetch('/api/upload', { method: 'POST', body: formData });
+      const d = await r.json();
+      status.style.display = 'block';
+      status.className = d.success ? 'ok' : 'err';
+      status.textContent = d.message;
+      if (d.success) {
+        showToast('✅ S3 upload complete → SQS triggered → Lambda processing...');
+        setTimeout(() => { loadSuspicious(); loadStats(); }, 3000);
+      }
+    } catch(e) {
+      status.style.display = 'block';
+      status.className = 'err';
+      status.textContent = 'Upload failed: ' + e.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⬆ Upload to S3';
+    }
+  }
+
+  function animatePipeline() {
+    const steps = ['pipe-s3','pipe-sqs','pipe-lambda','pipe-private','pipe-dash'];
+    steps.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.className = 'pipe-icon';
+      setTimeout(() => {
+        el.classList.add('active');
+        setTimeout(() => { el.classList.remove('active'); el.classList.add('done'); }, 800);
+      }, i * 800);
+    });
+  }
+
+  // ── Toast ────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Init & auto-refresh ──────────────────────────────
+  function loadAll() { loadStats(); loadRecentLogins(); loadSuspicious(); }
+  loadAll();
+  setInterval(loadAll, 15000); // auto-refresh every 15s
+</script>
+</body>
+</html>
