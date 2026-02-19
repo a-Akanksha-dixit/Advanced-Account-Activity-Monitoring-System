@@ -72,18 +72,18 @@ async function initializeDatabase() {
         `);
 
     // Seed some existing login logs for the demo (India-based)
-    await conn.query(`
-        INSERT IGNORE INTO login_logs (username, ip_address, status, country, city) VALUES
-            ('aarav',   '49.36.120.10',  'success', 'IN', 'Mumbai'),
-            ('aarav',   '49.36.121.22',  'success', 'IN', 'Delhi'),
-            ('aarav',   '103.27.9.100',  'failed',  'IN', 'Bengaluru'),
-            ('aarav',   '103.27.9.101',  'failed',  'IN', 'Bengaluru'),
-            ('aarav',   '103.27.9.102',  'failed',  'IN', 'Bengaluru'),
-            ('priya',   '122.160.45.5',  'success', 'IN', 'Pune'),
-            ('rohan',   '106.51.32.1',   'failed',  'IN', 'Chennai'),
-            ('rohan',   '106.51.32.2',   'failed',  'IN', 'Hyderabad'),
-            ('rohan',   '106.51.32.3',   'failed',  'IN', 'Kolkata')
-    `);
+    // await conn.query(`
+    //     INSERT IGNORE INTO login_logs (username, ip_address, status, country, city) VALUES
+    //         ('aarav',   '49.36.120.10',  'success', 'IN', 'Mumbai'),
+    //         ('aarav',   '49.36.121.22',  'success', 'IN', 'Delhi'),
+    //         ('aarav',   '103.27.9.100',  'failed',  'IN', 'Bengaluru'),
+    //         ('aarav',   '103.27.9.101',  'failed',  'IN', 'Bengaluru'),
+    //         ('aarav',   '103.27.9.102',  'failed',  'IN', 'Bengaluru'),
+    //         ('priya',   '122.160.45.5',  'success', 'IN', 'Pune'),
+    //         ('rohan',   '106.51.32.1',   'failed',  'IN', 'Chennai'),
+    //         ('rohan',   '106.51.32.2',   'failed',  'IN', 'Hyderabad'),
+    //         ('rohan',   '106.51.32.3',   'failed',  'IN', 'Kolkata')
+    // `);
 
     conn.release();
     console.log("✅ Database initialized with tables and demo data");
