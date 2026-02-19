@@ -348,6 +348,7 @@
   <nav class="nav-links">
     <a href="/" class="active">Dashboard</a>
     <a href="/login">Demo Login</a>
+    <a href="/screenshots">Screenshots</a>
   </nav>
   <div class="live-badge"><div class="live-dot"></div> LIVE MONITORING</div>
 </header>
@@ -538,7 +539,10 @@
     try {
       const r = await fetch('/api/suspicious');
       const res = await r.json();
-      const rows = res.data || [];
+      let rows = res.data || [];
+      if (rows.accounts != undefined && rows.accounts.length != 0) {
+        rows = rows.accounts;
+      }
       const source = res.source || 'unknown';
 
       if (!rows.length) {
@@ -595,19 +599,45 @@
   });
 
   function generateSampleLog() {
-    const users = ['alice', 'bob', 'charlie', 'diana', 'eve'];
+    const users = ['aarav', 'priya', 'rohan', 'ananya', 'vivek'];
+    const indianCities = ['Mumbai', 'Delhi', 'Bengaluru', 'Hyderabad', 'Chennai', 'Kolkata', 'Pune', 'Ahmedabad'];
+    const indianIPRanges = [
+      { prefix: '49.36', city: 'Mumbai' },
+      { prefix: '103.21', city: 'Delhi' },
+      { prefix: '122.160', city: 'Bengaluru' },
+      { prefix: '157.48', city: 'Hyderabad' },
+      { prefix: '223.190', city: 'Chennai' },
+      { prefix: '117.239', city: 'Kolkata' },
+      { prefix: '115.240', city: 'Pune' },
+      { prefix: '103.98', city: 'Ahmedabad' }
+    ];
+    
     const sampleLog = {
       generated_at: new Date().toISOString(),
       source: 'SecureWatch Dashboard',
-      events: users.map(u => ({
-        username: u,
-        ips: Array.from({length: Math.ceil(Math.random()*3)}, () =>
-          `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
-        ),
-        failed_attempts: Math.floor(Math.random() * 8),
-        countries: ['US','RU','CN','DE','BR'].slice(0, Math.ceil(Math.random()*3)),
-        last_seen: new Date(Date.now() - Math.random()*86400000).toISOString(),
-      }))
+      events: users.map(u => {
+        const numIPs = Math.ceil(Math.random() * 3);
+        const ipRanges = [];
+        const cities = [];
+        
+        // Generate IPs and corresponding cities
+        for (let i = 0; i < numIPs; i++) {
+          const range = indianIPRanges[Math.floor(Math.random() * indianIPRanges.length)];
+          const ip = `${range.prefix}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+          ipRanges.push(ip);
+          if (!cities.includes(range.city)) cities.push(range.city);
+        }
+        
+        return {
+          username: u,
+          ips: ipRanges,
+          cities: cities,
+          countries: ['IN'], // India
+          failed_attempts: Math.floor(Math.random() * 8),
+          last_seen: new Date(Date.now() - Math.random() * 86400000).toISOString(),
+          user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        };
+      })
     };
     const blob = new Blob([JSON.stringify(sampleLog, null, 2)], { type: 'application/json' });
     selectedFile = new File([blob], `security-log-${Date.now()}.json`, { type: 'application/json' });

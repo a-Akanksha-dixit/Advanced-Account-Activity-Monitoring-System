@@ -196,6 +196,7 @@
 <body>
 
 <a href="/" class="back-link">← Dashboard</a>
+<a href="/screenshots" class="back-link" style="left: 160px;">📸 Screenshots</a>
 
 <div class="login-container">
   <div class="login-header">
@@ -235,14 +236,14 @@
     <div class="log-header">⌛ Session Activity Log</div>
     <div class="log-body" id="activity-log">
       <div class="log-entry info">[SYSTEM] Demo login terminal initialized</div>
-      <div class="log-entry info">[SYSTEM] Valid users: aarav, priya, rohan, ananya, eve (password: demo123)</div>
+      <div class="log-entry info">[SYSTEM] Valid users: aarav, priya, rohan, ananya, vivek (password: demo123)</div>
       <div class="log-entry info">[SYSTEM] Each login is stored in RDS with simulated IP & location</div>
       <div class="log-entry info">[SYSTEM] Suspicious detection fires after 2+ IPs or 3+ failed attempts</div>
     </div>
   </div>
 
   <div class="hint">
-    Each login generates a <strong style="color:var(--accent)">random IP & location</strong> to simulate<br/>
+    Each login generates a <strong style="color:var(--accent)">random IP & city</strong> to simulate<br/>
     real-world account misuse patterns.<br/>
     View results on the <a href="/">Dashboard →</a>
   </div>

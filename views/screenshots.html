@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureWatch — Assignment Screenshots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050810;
+      --panel:     #0b0f1e;
+      --border:    #1a2240;
+      --accent:    #00e5ff;
+      --success:   #00e676;
+      --warn:      #ffb300;
+      --text:      #c8d8f0;
+      --text-dim:  #5a7099;
+      --glow:      0 0 20px rgba(0,229,255,0.15);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Header */
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 64px;
+      background: var(--panel); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 32px; height: 32px; background: var(--accent);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 8px var(--accent); }
+      50%       { box-shadow: 0 0 24px var(--accent); }
+    }
+    .logo-text {
+      font-size: 20px; font-weight: 700; letter-spacing: 4px;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; }
+
+    nav a {
+      color: var(--text-dim); text-decoration: none; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px;
+      border: 1px solid transparent; border-radius: 2px; transition: all 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--accent); border-color: var(--accent);
+      background: rgba(0,229,255,0.05);
+    }
+    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    /* Main */
+    main {
+      max-width: 1200px; margin: 0 auto; padding: 40px 24px;
+    }
+
+    .page-header {
+      text-align: center; margin-bottom: 48px;
+    }
+    .page-title {
+      font-size: 36px; font-weight: 700; letter-spacing: 6px;
+      text-transform: uppercase; color: #fff; margin-bottom: 12px;
+    }
+    .page-subtitle {
+      font-size: 13px; letter-spacing: 2px; color: var(--text-dim);
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 60px;
+    }
+    .section-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 24px; padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    .section-number {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.05));
+      border: 1px solid var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 18px; font-weight: 700; color: var(--accent);
+    }
+    .section-title {
+      flex: 1;
+      font-size: 20px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: #fff;
+    }
+    .section-status {
+      padding: 4px 12px; border-radius: 2px; font-size: 11px;
+      letter-spacing: 2px; font-weight: 600;
+    }
+    .status-done { background: rgba(0,230,118,0.15); color: var(--success); }
+    .status-pending { background: rgba(255,179,0,0.15); color: var(--warn); }
+
+    .section-description {
+      font-size: 14px; color: var(--text-dim); margin-bottom: 24px;
+      line-height: 1.8;
+    }
+
+    /* Screenshot grid */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .screenshot-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .screenshot-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .screenshot-img {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, rgba(0,229,255,0.03), rgba(255,59,92,0.03));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; opacity: 0.3;
+      border-bottom: 1px solid var(--border);
+    }
+    .screenshot-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .screenshot-info {
+      padding: 16px;
+    }
+    .screenshot-label {
+      font-size: 12px; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .screenshot-description {
+      font-size: 13px; color: var(--text-dim); line-height: 1.6;
+    }
+
+    /* Upload zone */
+    .upload-placeholder {
+      background: var(--panel);
+      border: 2px dashed var(--border);
+      border-radius: 4px;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .upload-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+    .upload-text {
+      font-size: 13px; color: var(--text-dim); line-height: 1.8;
+    }
+    .upload-text strong { color: var(--accent); }
+
+    /* Instructions */
+    .instructions {
+      background: rgba(0,229,255,0.04);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      margin: 24px 0;
+      border-radius: 2px;
+    }
+    .instructions-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .instructions-list {
+      font-size: 13px; color: var(--text-dim); line-height: 2;
+      list-style: none; padding: 0;
+    }
+    .instructions-list li::before {
+      content: '▸'; color: var(--accent); margin-right: 10px;
+    }
+
+    /* Modal for full-screen image */
+    .modal {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.95);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal.active { display: flex; }
+    .modal img {
+      max-width: 95%; max-height: 95%;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 40px rgba(0,229,255,0.2);
+    }
+    .modal-close {
+      position: absolute; top: 24px; right: 24px;
+      color: var(--text); font-size: 32px; cursor: pointer;
+      padding: 8px 16px; border: 1px solid var(--border);
+      background: var(--panel); border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    .mono { font-family: 'Share Tech Mono', monospace; }
+
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 2px;
+      font-size: 10px; letter-spacing: 2px; font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: rgba(0,229,255,0.15); color: var(--accent); }
+    .badge-success { background: rgba(0,230,118,0.15); color: var(--success); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon"></div>
+    <div>
+      <div class="logo-text">SecureWatch</div>
+      <div class="logo-sub">AWS Assignment Documentation</div>
+    </div>
+  </div>
+  <nav class="nav-links">
+    <a href="/">Dashboard</a>
+    <a href="/login">Demo Login</a>
+    <a href="/screenshots" class="active">Screenshots</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <div class="page-title">📸 Assignment Screenshots</div>
+    <div class="page-subtitle">Complete AWS Infrastructure & Deployment Documentation</div>
+  </div>
+
+  <!-- Section 1: VPC -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <div class="section-title">VPC Configuration</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Created custom VPC with CIDR 10.0.0.0/16, one public subnet (10.0.1.0/24) for Elastic Beanstalk,
+      and one private subnet (10.0.2.0/24) for RDS. Internet Gateway attached to public subnet,
+      NAT Gateway configured for private subnet outbound access.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/01-vpc-dashboard.png">🌐</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">VPC Dashboard</div>
+          <div class="screenshot-description">Main VPC overview showing subnets, route tables, and gateways</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/02-subnets.png">📍</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Subnet Configuration</div>
+          <div class="screenshot-description">Public and private subnets with CIDR blocks</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/03-route-tables.png">🛣️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Route Tables</div>
+          <div class="screenshot-description">IGW for public, NAT Gateway for private subnet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: RDS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <div class="section-title">RDS Database</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      MySQL RDS instance (db.t3.micro) deployed in private subnet with no public access.
+      Security group allows inbound on port 3306 only from Elastic Beanstalk security group.
+      Database: <span class="mono">securitydb</span> with tables: users, login_logs, suspicious_accounts.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/04-rds-instance.png">🗄️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">RDS Instance Details</div>
+          <div class="screenshot-description">MySQL instance running in private subnet</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/05-rds-security-group.png">🔒</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Security Group Rules</div>
+          <div class="screenshot-description">MySQL port 3306 restricted to EBS security group</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Elastic Beanstalk -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <div class="section-title">Elastic Beanstalk</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Node.js application deployed on Elastic Beanstalk in public subnet with load balancer.
+      Environment variables configured for RDS connection and S3 bucket names.
+      Application serves dashboard, demo login, and API endpoints.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/06-ebs-environment.png">⚙️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">EBS Environment Health</div>
+          <div class="screenshot-description">Application running with green health status</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/07-ebs-env-vars.png">🔧</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Environment Variables</div>
+          <div class="screenshot-description">DB credentials and S3 bucket configurations</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/08-app-working.png">✨</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Application Running</div>
+          <div class="screenshot-description">Live dashboard accessible via EBS URL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: S3 & SQS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <div class="section-title">S3 Buckets & SQS Queue</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Two S3 buckets: public bucket for log file uploads with event notification configured,
+      private bucket for Lambda-processed reports. SQS queue receives S3 PUT events.
+      Bucket policy allows public read access to static files.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/09-s3-public-bucket.png">🪣</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">S3 Public Bucket</div>
+          <div class="screenshot-description">Log files uploaded from dashboard</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/10-s3-bucket-policy.png">📋</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Bucket Policy</div>
+          <div class="screenshot-description">Public read access for static files</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/11-s3-event-notification.png">🔔</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">S3 Event Notification</div>
+          <div class="screenshot-description">ObjectCreated event triggers SQS message</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/12-sqs-queue.png">📨</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">SQS Queue</div>
+          <div class="screenshot-description">Standard queue receiving S3 events</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Lambda -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div class="section-title">Lambda Function</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Lambda function triggered by SQS messages. Reads uploaded log files from public S3 bucket,
+      analyzes for suspicious patterns (multiple IPs, failed attempts, multiple countries),
+      and writes processed JSON report to private S3 bucket. All execution logged to CloudWatch.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/13-lambda-function.png">λ</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Lambda Function Code</div>
+          <div class="screenshot-description">Node.js function processing security logs</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/14-lambda-trigger.png">⚡</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">SQS Trigger Configuration</div>
+          <div class="screenshot-description">Lambda triggered by SQS queue messages</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/15-lambda-cloudwatch.png">📊</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">CloudWatch Logs</div>
+          <div class="screenshot-description">Lambda execution logs showing file processing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: CloudWatch -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <div class="section-title">CloudWatch Monitoring</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      CloudWatch monitoring configured for Elastic Beanstalk environment and RDS instance.
+      CPU utilization alarms set up for both services. Log groups capturing EBS application logs
+      and Lambda execution logs. Metrics dashboard showing system health.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/16-cloudwatch-ebs.png">📈</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">EBS Metrics</div>
+          <div class="screenshot-description">CPU, network, and request metrics</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/17-cloudwatch-rds.png">💾</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">RDS Metrics</div>
+          <div class="screenshot-description">Database CPU, connections, and IOPS</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/18-cloudwatch-alarms.png">🚨</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">CPU Alarms</div>
+          <div class="screenshot-description">Alarms configured for EBS and RDS CPU thresholds</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/19-cloudwatch-logs.png">📝</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Application Logs</div>
+          <div class="screenshot-description">EBS environment logs in CloudWatch Logs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: CI/CD -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <div class="section-title">CI/CD Pipeline (Bonus)</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      GitHub Actions workflow configured for continuous deployment to Elastic Beanstalk.
+      Automated build and deployment triggered on push to main branch. Workflow creates
+      deployment package, uploads to S3, and deploys to EBS environment.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/20-github-workflow.png">🔄</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">GitHub Actions Workflow</div>
+          <div class="screenshot-description">CI/CD pipeline YAML configuration</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/21-github-secrets.png">🔐</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">GitHub Secrets</div>
+          <div class="screenshot-description">AWS credentials and configuration stored securely</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/22-deployment-success.png">✅</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Deployment Success</div>
+          <div class="screenshot-description">Successful automated deployment to EBS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 8: Application Demo -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <div class="section-title">Working Application</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Complete end-to-end demonstration of the security dashboard application.
+      Dashboard shows real-time login activity, suspicious account detection, and S3→SQS→Lambda pipeline.
+      Demo login page simulates account misuse scenarios.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/23-dashboard-overview.png">📊</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Dashboard Overview</div>
+          <div class="screenshot-description">Live statistics and suspicious account alerts</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/24-login-demo.png">🔑</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Demo Login Page</div>
+          <div class="screenshot-description">Simulated login attempts with IP tracking</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/25-file-upload.png">📤</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">S3 File Upload</div>
+          <div class="screenshot-description">Log file upload triggering Lambda pipeline</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/26-suspicious-detected.png">⚠️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">Suspicious Activity Detected</div>
+          <div class="screenshot-description">Lambda-processed report showing flagged accounts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instructions -->
+  <div class="instructions">
+    <div class="instructions-title">📋 How to Add Your Screenshots</div>
+    <ul class="instructions-list">
+      <li>Place your screenshot images in <span class="mono">/public/screenshots/</span> folder</li>
+      <li>Name them according to the numbering: <span class="mono">01-vpc-dashboard.png</span>, <span class="mono">02-subnets.png</span>, etc.</li>
+      <li>Supported formats: PNG, JPG, JPEG</li>
+      <li>Recommended resolution: 1920x1080 or higher for clarity</li>
+      <li>Images will auto-load when properly named and placed</li>
+      <li>Click any screenshot card to view full-screen version</li>
+    </ul>
+  </div>
+
+  <!-- Upload Placeholder -->
+  <div class="upload-placeholder">
+    <div class="upload-icon">📁</div>
+    <div class="upload-text">
+      <strong>Ready to document your deployment?</strong><br/>
+      Add your screenshots to <span class="mono">/public/screenshots/</span> and they'll appear above.<br/>
+      Each section is pre-configured with descriptive labels matching the assignment requirements.
+    </div>
+  </div>
+
+</main>
+
+<!-- Full-screen modal -->
+<div class="modal" id="modal" onclick="closeImage()">
+  <div class="modal-close">✕</div>
+  <img src="" alt="Full screen" id="modal-img" onclick="event.stopPropagation()">
+</div>
+
+<script>
+  // Load screenshots if they exist
+  document.addEventListener('DOMContentLoaded', () => {
+    const imgs = document.querySelectorAll('.screenshot-img[data-src]');
+    imgs.forEach(div => {
+      const src = div.getAttribute('data-src');
+      const img = new Image();
+      img.onload = function() {
+        div.innerHTML = '';
+        div.appendChild(this);
+      };
+      img.onerror = function() {
+        // Keep the placeholder icon if image doesn't exist
+      };
+      img.src = '/' + src;
+    });
+  });
+
+  function openImage(card) {
+    const imgDiv = card.querySelector('.screenshot-img');
+    const img = imgDiv.querySelector('img');
+    if (img) {
+      document.getElementById('modal-img').src = img.src;
+      document.getElementById('modal').classList.add('active');
+    }
+  }
+
+  function closeImage() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  // ESC key to close
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeImage();
+  });
+</script>
+</body>
+</html>
