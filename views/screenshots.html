@@ -21,12 +21,25 @@
       --glow:      0 0 20px rgba(0,229,255,0.15);
     }
 
+    [data-theme="light"] {
+      --bg:        #f5f7fa;
+      --panel:     #ffffff;
+      --border:    #e1e8ed;
+      --accent:    #0284c7;
+      --success:   #059669;
+      --warn:      #ea580c;
+      --text:      #1e293b;
+      --text-dim:  #64748b;
+      --glow:      0 0 20px rgba(2,132,199,0.1);
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Rajdhani', sans-serif;
       font-size: 15px;
       line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     body::after {
@@ -38,6 +51,12 @@
       );
       pointer-events: none;
       z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    [data-theme="light"] body::after {
+      opacity: 0;
     }
 
     /* Header */
@@ -74,6 +93,37 @@
       background: rgba(0,229,255,0.05);
     }
     .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .theme-toggle-label {
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 44px; height: 22px;
+      background: var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-switch:hover {
+      background: var(--muted);
+    }
+    .toggle-slider {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 18px; height: 18px;
+      background: var(--text);
+      border-radius: 50%;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(22px);
+      background: var(--accent);
+    }
 
     /* Main */
     main {
@@ -253,6 +303,13 @@
     <a href="/login">Demo Login</a>
     <a href="/screenshots" class="active">Screenshots</a>
   </nav>
+  <div class="theme-toggle">
+    <span class="theme-toggle-label">🌙</span>
+    <div class="toggle-switch" id="theme-toggle" onclick="toggleTheme()">
+      <div class="toggle-slider"></div>
+    </div>
+    <span class="theme-toggle-label">☀️</span>
+  </div>
 </header>
 
 <main>
@@ -637,6 +694,26 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeImage();
   });
+
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const currentTheme = html.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    toggle.classList.toggle('active', newTheme === 'light');
+    localStorage.setItem('theme', newTheme);
+  }
+
+  // Load saved theme
+  (function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const toggle = document.getElementById('theme-toggle');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    toggle.classList.toggle('active', savedTheme === 'light');
+  })();
 </script>
 </body>
 </html>

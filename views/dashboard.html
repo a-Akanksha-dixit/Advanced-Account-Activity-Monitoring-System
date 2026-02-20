@@ -23,6 +23,21 @@
       --glow:      0 0 20px rgba(0,229,255,0.15);
     }
 
+    /* Light theme colors */
+    [data-theme="light"] {
+      --bg:        #f5f7fa;
+      --panel:     #ffffff;
+      --border:    #e1e8ed;
+      --accent:    #0284c7;
+      --danger:    #dc2626;
+      --warn:      #ea580c;
+      --success:   #059669;
+      --muted:     #94a3b8;
+      --text:      #1e293b;
+      --text-dim:  #64748b;
+      --glow:      0 0 20px rgba(2,132,199,0.1);
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -30,9 +45,10 @@
       font-size: 15px;
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Scanline overlay */
+    /* Scanline overlay - hide in light mode */
     body::after {
       content: '';
       position: fixed; inset: 0;
@@ -45,6 +61,12 @@
       );
       pointer-events: none;
       z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    [data-theme="light"] body::after {
+      opacity: 0;
     }
 
     /* ── Header ── */
@@ -103,6 +125,39 @@
       animation: blink 1.2s ease-in-out infinite;
     }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* Theme toggle switch */
+    .theme-toggle {
+      display: flex; align-items: center; gap: 8px;
+      margin-right: 16px;
+    }
+    .theme-toggle-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 44px; height: 22px;
+      background: var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-switch:hover {
+      background: var(--muted);
+    }
+    .toggle-slider {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 18px; height: 18px;
+      background: var(--text);
+      border-radius: 50%;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(22px);
+      background: var(--accent);
+    }
 
     /* ── Main layout ── */
     main {
@@ -332,6 +387,16 @@
     }
     .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+    .limit-select {
+      background: var(--panel); border: 1px solid var(--border);
+      color: var(--text); padding: 4px 10px; border-radius: 2px;
+      font-size: 11px; letter-spacing: 1px; cursor: pointer;
+      font-family: 'Share Tech Mono', monospace;
+      transition: all 0.2s;
+    }
+    .limit-select:hover { border-color: var(--accent); }
+    .limit-select:focus { outline: none; border-color: var(--accent); }
+
     .mono { font-family: 'Share Tech Mono', monospace; }
   </style>
 </head>
@@ -350,7 +415,16 @@
     <a href="/login">Demo Login</a>
     <a href="/screenshots">Screenshots</a>
   </nav>
-  <div class="live-badge"><div class="live-dot"></div> LIVE MONITORING</div>
+  <div style="display: flex; align-items: center; gap: 16px;">
+    <div class="theme-toggle">
+      <span class="theme-toggle-label">🌙 Dark</span>
+      <div class="toggle-switch" id="theme-toggle" onclick="toggleTheme()">
+        <div class="toggle-slider"></div>
+      </div>
+      <span class="theme-toggle-label">☀️ Light</span>
+    </div>
+    <div class="live-badge"><div class="live-dot"></div> LIVE MONITORING</div>
+  </div>
 </header>
 
 <main>
@@ -411,9 +485,16 @@
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">📡 Live Login Feed</span>
-        <button class="refresh-btn" onclick="loadRecentLogins()">↻ Refresh</button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <select id="login-limit" class="limit-select" onchange="loadRecentLogins()">
+            <option value="20" selected>Last 20</option>
+            <option value="50">Last 50</option>
+            <option value="100">Last 100</option>
+          </select>
+          <button class="refresh-btn" onclick="loadRecentLogins()">↻ Refresh</button>
+        </div>
       </div>
-      <div class="panel-body" style="padding: 0;">
+      <div class="panel-body" style="padding: 0; max-height: 400px; overflow-y: auto;">
         <table class="data-table">
           <thead>
             <tr><th>User</th><th>IP</th><th>Location</th><th>Status</th><th>Time</th></tr>
@@ -422,6 +503,9 @@
             <tr><td colspan="5"><div class="empty-state"><div class="emoji">📡</div>Loading...</div></td></tr>
           </tbody>
         </table>
+      </div>
+      <div style="padding: 10px 20px; border-top: 1px solid var(--border); text-align: center; font-size: 11px; color: var(--text-dim);">
+        Showing <span id="login-count">0</span> most recent login events
       </div>
     </div>
   </div>
@@ -513,9 +597,15 @@
 
   async function loadRecentLogins() {
     const tbody = document.getElementById('logins-body');
+    const limit = document.getElementById('login-limit').value;
+    
     try {
-      const r = await fetch('/api/recent-logins');
+      const r = await fetch(`/api/recent-logins?limit=${limit}`);
       const rows = await r.json();
+      
+      // Update count
+      document.getElementById('login-count').textContent = rows.length;
+      
       if (!rows.length) {
         tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="emoji">🔒</div>No login events yet — try the <a href="/login" style="color:var(--accent)">demo login page</a></div></td></tr>';
         return;
@@ -710,6 +800,28 @@
   function loadAll() { loadStats(); loadRecentLogins(); loadSuspicious(); }
   loadAll();
   setInterval(loadAll, 15000); // auto-refresh every 15s
+
+  // ── Theme toggle ──────────────────────────────────────
+  function toggleTheme() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const currentTheme = html.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    toggle.classList.toggle('active', newTheme === 'light');
+    
+    // Save preference
+    localStorage.setItem('theme', newTheme);
+  }
+
+  // Load saved theme on page load
+  (function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const toggle = document.getElementById('theme-toggle');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    toggle.classList.toggle('active', savedTheme === 'light');
+  })();
 </script>
 </body>
 </html>

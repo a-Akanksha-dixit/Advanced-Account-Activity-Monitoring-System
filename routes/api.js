@@ -159,12 +159,14 @@ router.get('/stats', async (req, res) => {
 // ─────────────────────────────────────────────
 router.get('/recent-logins', async (req, res) => {
   try {
+    const limit = parseInt(req.query.limit) || 20; // Default 20
     const rows = await query(
       `SELECT username, ip_address, status, country, city,
               DATE_FORMAT(logged_at, '%Y-%m-%d %H:%i:%s') as logged_at
        FROM login_logs
        ORDER BY logged_at DESC
-       LIMIT 20`
+       LIMIT ?`,
+      [limit]
     );
     res.json(rows);
   } catch (err) {

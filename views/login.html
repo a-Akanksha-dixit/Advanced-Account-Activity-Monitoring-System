@@ -21,6 +21,18 @@
       --glow:     0 0 30px rgba(0,229,255,0.15);
     }
 
+    [data-theme="light"] {
+      --bg:       #f5f7fa;
+      --panel:    #ffffff;
+      --border:   #e1e8ed;
+      --accent:   #0284c7;
+      --danger:   #dc2626;
+      --success:  #059669;
+      --text:     #1e293b;
+      --text-dim: #64748b;
+      --glow:     0 0 30px rgba(2,132,199,0.1);
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -31,6 +43,7 @@
       align-items: center;
       justify-content: center;
       padding: 24px;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     body::before {
@@ -40,6 +53,14 @@
         radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,229,255,0.06), transparent),
         radial-gradient(ellipse 40% 60% at 100% 100%, rgba(255,59,92,0.04), transparent);
       pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    [data-theme="light"] body::before {
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(2,132,199,0.04), transparent),
+        radial-gradient(ellipse 40% 60% at 100% 100%, rgba(220,38,38,0.03), transparent);
     }
 
     body::after {
@@ -50,6 +71,12 @@
         rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px
       );
       pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    [data-theme="light"] body::after {
+      opacity: 0;
     }
 
     .back-link {
@@ -60,6 +87,38 @@
       transition: all 0.2s;
     }
     .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+    .theme-toggle {
+      position: fixed; top: 20px; right: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .theme-toggle-label {
+      font-size: 10px; letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 44px; height: 22px;
+      background: var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-switch:hover {
+      background: var(--muted);
+    }
+    .toggle-slider {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 18px; height: 18px;
+      background: var(--text);
+      border-radius: 50%;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(22px);
+      background: var(--accent);
+    }
 
     .login-container {
       width: 100%; max-width: 440px;
@@ -198,6 +257,14 @@
 <a href="/" class="back-link">← Dashboard</a>
 <a href="/screenshots" class="back-link" style="left: 160px;">📸 Screenshots</a>
 
+<div class="theme-toggle">
+  <span class="theme-toggle-label">🌙</span>
+  <div class="toggle-switch" id="theme-toggle" onclick="toggleTheme()">
+    <div class="toggle-slider"></div>
+  </div>
+  <span class="theme-toggle-label">☀️</span>
+</div>
+
 <div class="login-container">
   <div class="login-header">
     <div class="shield">🛡️</div>
@@ -326,6 +393,26 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter') doLogin();
   });
+
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const toggle = document.getElementById('theme-toggle');
+    const currentTheme = html.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    toggle.classList.toggle('active', newTheme === 'light');
+    localStorage.setItem('theme', newTheme);
+  }
+
+  // Load saved theme
+  (function() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const toggle = document.getElementById('theme-toggle');
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    toggle.classList.toggle('active', savedTheme === 'light');
+  })();
 </script>
 </body>
 </html>
