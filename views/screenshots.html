@@ -318,7 +318,7 @@
     <div class="page-subtitle">Complete AWS Infrastructure & Deployment Documentation</div>
   </div>
 
-  <!-- Section 1: VPC -->
+  <!-- Section 1: VPC (4 screenshots: 01-04) -->
   <div class="section">
     <div class="section-header">
       <div class="section-number">1</div>
@@ -327,35 +327,41 @@
     </div>
     <div class="section-description">
       Created custom VPC with CIDR 10.0.0.0/16, one public subnet (10.0.1.0/24) for Elastic Beanstalk,
-      and one private subnet (10.0.2.0/24) for RDS. Internet Gateway attached to public subnet,
-      NAT Gateway configured for private subnet outbound access.
+      and one private subnet (10.0.2.0/24) for RDS. Internet Gateway attached to public subnet.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/01-vpc-dashboard.png">🌐</div>
+        <div class="screenshot-img" data-src="screenshots/01-vpc-overview.png">🌐</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">VPC Dashboard</div>
-          <div class="screenshot-description">Main VPC overview showing subnets, route tables, and gateways</div>
+          <div class="screenshot-label">01 - VPC Overview</div>
+          <div class="screenshot-description">Custom VPC with CIDR 10.0.0.0/16</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
         <div class="screenshot-img" data-src="screenshots/02-subnets.png">📍</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Subnet Configuration</div>
-          <div class="screenshot-description">Public and private subnets with CIDR blocks</div>
+          <div class="screenshot-label">02 - Subnets</div>
+          <div class="screenshot-description">Public (10.0.1.0/24) and private (10.0.2.0/24) subnets</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/03-route-tables.png">🛣️</div>
+        <div class="screenshot-img" data-src="screenshots/03-internet-gateway.png">🔌</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Route Tables</div>
-          <div class="screenshot-description">IGW for public, NAT Gateway for private subnet</div>
+          <div class="screenshot-label">03 - Internet Gateway</div>
+          <div class="screenshot-description">IGW attached to VPC</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/04-route-tables.png">🛣️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">04 - Route Tables</div>
+          <div class="screenshot-description">Public route with IGW, private with local routes</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 2: RDS -->
+  <!-- Section 2: RDS (3 screenshots: 05-07) -->
   <div class="section">
     <div class="section-header">
       <div class="section-number">2</div>
@@ -365,27 +371,33 @@
     <div class="section-description">
       MySQL RDS instance (db.t3.micro) deployed in private subnet with no public access.
       Security group allows inbound on port 3306 only from Elastic Beanstalk security group.
-      Database: <span class="mono">securitydb</span> with tables: users, login_logs, suspicious_accounts.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/04-rds-instance.png">🗄️</div>
+        <div class="screenshot-img" data-src="screenshots/05-rds-instance.png">🗄️</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">RDS Instance Details</div>
-          <div class="screenshot-description">MySQL instance running in private subnet</div>
+          <div class="screenshot-label">05 - RDS Instance</div>
+          <div class="screenshot-description">MySQL instance in private subnet</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/05-rds-security-group.png">🔒</div>
+        <div class="screenshot-img" data-src="screenshots/06-rds-subnet-group.png">🔐</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Security Group Rules</div>
+          <div class="screenshot-label">06 - RDS Subnet Group</div>
+          <div class="screenshot-description">DB subnet group showing private subnet</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/07-rds-security-group.png">🔒</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">07 - RDS Security Group</div>
           <div class="screenshot-description">MySQL port 3306 restricted to EBS security group</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 3: Elastic Beanstalk -->
+  <!-- Section 3: EBS (5 screenshots: 08-12) -->
   <div class="section">
     <div class="section-header">
       <div class="section-number">3</div>
@@ -393,236 +405,372 @@
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      Node.js application deployed on Elastic Beanstalk in public subnet with load balancer.
+      Node.js application deployed on Elastic Beanstalk in public subnet.
       Environment variables configured for RDS connection and S3 bucket names.
-      Application serves dashboard, demo login, and API endpoints.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/06-ebs-environment.png">⚙️</div>
+        <div class="screenshot-img" data-src="screenshots/08-ebs-application.png">📦</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">EBS Environment Health</div>
-          <div class="screenshot-description">Application running with green health status</div>
+          <div class="screenshot-label">08 - EBS Application</div>
+          <div class="screenshot-description">Elastic Beanstalk application created</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/07-ebs-env-vars.png">🔧</div>
+        <div class="screenshot-img" data-src="screenshots/09-ebs-environment.png">⚙️</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Environment Variables</div>
-          <div class="screenshot-description">DB credentials and S3 bucket configurations</div>
+          <div class="screenshot-label">09 - EBS Environment</div>
+          <div class="screenshot-description">Environment with green health status</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/08-app-working.png">✨</div>
+        <div class="screenshot-img" data-src="screenshots/10-ebs-configuration.png">🔧</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Application Running</div>
+          <div class="screenshot-label">10 - EBS Configuration</div>
+          <div class="screenshot-description">Environment configuration showing VPC settings</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/11-ebs-security-group.png">🛡️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">11 - EBS Security Group</div>
+          <div class="screenshot-description">Security group attached to EBS instances</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/12-app-url-working.png">✨</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">12 - App Working</div>
           <div class="screenshot-description">Live dashboard accessible via EBS URL</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 4: S3 & SQS -->
+  <!-- Section 4: Security Groups (1 screenshot: 13) -->
   <div class="section">
     <div class="section-header">
       <div class="section-number">4</div>
-      <div class="section-title">S3 Buckets & SQS Queue</div>
+      <div class="section-title">Security Groups Configuration</div>
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      Two S3 buckets: public bucket for log file uploads with event notification configured,
-      private bucket for Lambda-processed reports. SQS queue receives S3 PUT events.
-      Bucket policy allows public read access to static files.
+      Security group configuration proving EBS can access RDS on port 3306.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/09-s3-public-bucket.png">🪣</div>
+        <div class="screenshot-img" data-src="screenshots/13-ebs-to-rds-sg.png">🔗</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">S3 Public Bucket</div>
+          <div class="screenshot-label">13 - EBS to RDS Access</div>
+          <div class="screenshot-description">RDS security group showing EBS SG as source</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: S3 (3 screenshots: 14-16) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <div class="section-title">S3 Buckets</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Public S3 bucket for log uploads with event notification to SQS. Bucket policy allows public read for static files.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/14-s3-public-bucket.png">🪣</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">14 - S3 Public Bucket</div>
           <div class="screenshot-description">Log files uploaded from dashboard</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/10-s3-bucket-policy.png">📋</div>
+        <div class="screenshot-img" data-src="screenshots/15-s3-bucket-policy.png">📋</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Bucket Policy</div>
+          <div class="screenshot-label">15 - Bucket Policy</div>
           <div class="screenshot-description">Public read access for static files</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/11-s3-event-notification.png">🔔</div>
+        <div class="screenshot-img" data-src="screenshots/16-s3-event-notification.png">🔔</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">S3 Event Notification</div>
+          <div class="screenshot-label">16 - S3 Event Notification</div>
           <div class="screenshot-description">ObjectCreated event triggers SQS message</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/12-sqs-queue.png">📨</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">SQS Queue</div>
-          <div class="screenshot-description">Standard queue receiving S3 events</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 5: Lambda -->
+  <!-- Section 6: SQS (2 screenshots: 17-18) -->
   <div class="section">
     <div class="section-header">
-      <div class="section-number">5</div>
+      <div class="section-number">6</div>
+      <div class="section-title">SQS Queue</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      Standard SQS queue receiving S3 event notifications.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/17-sqs-queue.png">📨</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">17 - SQS Queue</div>
+          <div class="screenshot-description">Standard queue receiving S3 events</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/18-sqs-messages.png">💬</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">18 - SQS Messages</div>
+          <div class="screenshot-description">Messages received after S3 upload (optional)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Lambda (3 screenshots: 19-21) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
       <div class="section-title">Lambda Function</div>
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      Lambda function triggered by SQS messages. Reads uploaded log files from public S3 bucket,
-      analyzes for suspicious patterns (multiple IPs, failed attempts, multiple countries),
-      and writes processed JSON report to private S3 bucket. All execution logged to CloudWatch.
+      Lambda function triggered by SQS, processing security logs and writing reports to private S3.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/13-lambda-function.png">λ</div>
+        <div class="screenshot-img" data-src="screenshots/19-lambda-function.png">λ</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Lambda Function Code</div>
-          <div class="screenshot-description">Node.js function processing security logs</div>
+          <div class="screenshot-label">19 - Lambda Function</div>
+          <div class="screenshot-description">Node.js function code</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/14-lambda-trigger.png">⚡</div>
+        <div class="screenshot-img" data-src="screenshots/20-lambda-trigger.png">⚡</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">SQS Trigger Configuration</div>
-          <div class="screenshot-description">Lambda triggered by SQS queue messages</div>
+          <div class="screenshot-label">20 - Lambda Trigger</div>
+          <div class="screenshot-description">SQS trigger configuration</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/15-lambda-cloudwatch.png">📊</div>
+        <div class="screenshot-img" data-src="screenshots/21-lambda-test-execution.png">🧪</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">CloudWatch Logs</div>
-          <div class="screenshot-description">Lambda execution logs showing file processing</div>
+          <div class="screenshot-label">21 - Lambda Execution</div>
+          <div class="screenshot-description">Test execution or recent invocations</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 6: CloudWatch -->
+  <!-- Section 8: CloudWatch Lambda (2 screenshots: 22-23) -->
   <div class="section">
     <div class="section-header">
-      <div class="section-number">6</div>
-      <div class="section-title">CloudWatch Monitoring</div>
+      <div class="section-number">8</div>
+      <div class="section-title">CloudWatch — Lambda Logs</div>
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      CloudWatch monitoring configured for Elastic Beanstalk environment and RDS instance.
-      CPU utilization alarms set up for both services. Log groups capturing EBS application logs
-      and Lambda execution logs. Metrics dashboard showing system health.
+      CloudWatch Logs capturing Lambda execution and processing logic.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/16-cloudwatch-ebs.png">📈</div>
+        <div class="screenshot-img" data-src="screenshots/22-cloudwatch-lambda-logs.png">📊</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">EBS Metrics</div>
+          <div class="screenshot-label">22 - CloudWatch Lambda Logs</div>
+          <div class="screenshot-description">Lambda execution logs</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/23-lambda-log-details.png">📝</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">23 - Log Details</div>
+          <div class="screenshot-description">Detailed log entry showing processing logic</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 9: CloudWatch EBS (2 screenshots: 24-25) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">9</div>
+      <div class="section-title">CloudWatch — EBS Monitoring</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      CloudWatch metrics and alarms for Elastic Beanstalk environment.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/24-cloudwatch-ebs-metrics.png">📈</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">24 - EBS Metrics</div>
           <div class="screenshot-description">CPU, network, and request metrics</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/17-cloudwatch-rds.png">💾</div>
+        <div class="screenshot-img" data-src="screenshots/25-cloudwatch-ebs-alarm.png">🚨</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">RDS Metrics</div>
-          <div class="screenshot-description">Database CPU, connections, and IOPS</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/18-cloudwatch-alarms.png">🚨</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">CPU Alarms</div>
-          <div class="screenshot-description">Alarms configured for EBS and RDS CPU thresholds</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/19-cloudwatch-logs.png">📝</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">Application Logs</div>
-          <div class="screenshot-description">EBS environment logs in CloudWatch Logs</div>
+          <div class="screenshot-label">25 - EBS CPU Alarm</div>
+          <div class="screenshot-description">CPU utilization alarm</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 7: CI/CD -->
+  <!-- Section 10: CloudWatch RDS (2 screenshots: 26-27) -->
   <div class="section">
     <div class="section-header">
-      <div class="section-number">7</div>
+      <div class="section-number">10</div>
+      <div class="section-title">CloudWatch — RDS Monitoring</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      CloudWatch metrics and alarms for RDS database.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/26-cloudwatch-rds-metrics.png">💾</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">26 - RDS Metrics</div>
+          <div class="screenshot-description">CPU, connections, and IOPS</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/27-cloudwatch-rds-alarm.png">⚠️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">27 - RDS CPU Alarm</div>
+          <div class="screenshot-description">CPU utilization alarm for RDS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 11: CloudWatch Logs (2 screenshots: 28-29) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">11</div>
+      <div class="section-title">CloudWatch — EBS Environment Logs</div>
+      <span class="section-status status-done">✓ COMPLETED</span>
+    </div>
+    <div class="section-description">
+      CloudWatch Logs showing EBS application logs.
+    </div>
+    <div class="screenshot-grid">
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/28-cloudwatch-ebs-logs.png">📋</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">28 - EBS Logs</div>
+          <div class="screenshot-description">CloudWatch Logs for EBS environment</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/29-ebs-log-entries.png">📄</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">29 - Log Entries</div>
+          <div class="screenshot-description">Actual log entries from application</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 12: CI/CD (Optional - screenshots 30-37) -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">12</div>
       <div class="section-title">CI/CD Pipeline (Bonus)</div>
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      GitHub Actions workflow configured for continuous deployment to Elastic Beanstalk.
-      Automated build and deployment triggered on push to main branch. Workflow creates
-      deployment package, uploads to S3, and deploys to EBS environment.
+      Automated CI/CD pipeline using GitHub Actions or Jenkins for continuous deployment.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/20-github-workflow.png">🔄</div>
+        <div class="screenshot-img" data-src="screenshots/30-cicd-workflow.png">🔄</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">GitHub Actions Workflow</div>
-          <div class="screenshot-description">CI/CD pipeline YAML configuration</div>
+          <div class="screenshot-label">30 - Workflow File</div>
+          <div class="screenshot-description">GitHub Actions or Jenkinsfile</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/21-github-secrets.png">🔐</div>
+        <div class="screenshot-img" data-src="screenshots/31-cicd-secrets.png">🔐</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">GitHub Secrets</div>
-          <div class="screenshot-description">AWS credentials and configuration stored securely</div>
+          <div class="screenshot-label">31 - Secrets/Credentials</div>
+          <div class="screenshot-description">AWS credentials configured (blur values!)</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/22-deployment-success.png">✅</div>
+        <div class="screenshot-img" data-src="screenshots/32-cicd-success.png">✅</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Deployment Success</div>
-          <div class="screenshot-description">Successful automated deployment to EBS</div>
+          <div class="screenshot-label">32 - Deployment Success</div>
+          <div class="screenshot-description">Successful build and deployment</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/33-deployment-logs.png">📜</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">33 - Deployment Logs</div>
+          <div class="screenshot-description">Deployment logs showing EBS update</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 8: Application Demo -->
+  <!-- Section 13: Application Demo (screenshots 34-39) -->
   <div class="section">
     <div class="section-header">
-      <div class="section-number">8</div>
+      <div class="section-number">13</div>
       <div class="section-title">Working Application</div>
       <span class="section-status status-done">✓ COMPLETED</span>
     </div>
     <div class="section-description">
-      Complete end-to-end demonstration of the security dashboard application.
-      Dashboard shows real-time login activity, suspicious account detection, and S3→SQS→Lambda pipeline.
-      Demo login page simulates account misuse scenarios.
+      End-to-end demonstration of the working security dashboard application.
     </div>
     <div class="screenshot-grid">
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/23-dashboard-overview.png">📊</div>
+        <div class="screenshot-img" data-src="screenshots/34-dashboard-live.png">📊</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Dashboard Overview</div>
-          <div class="screenshot-description">Live statistics and suspicious account alerts</div>
+          <div class="screenshot-label">34 - Dashboard Live</div>
+          <div class="screenshot-description">Dashboard showing live statistics</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/24-login-demo.png">🔑</div>
+        <div class="screenshot-img" data-src="screenshots/35-login-demo.png">🔑</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Demo Login Page</div>
-          <div class="screenshot-description">Simulated login attempts with IP tracking</div>
+          <div class="screenshot-label">35 - Login Demo</div>
+          <div class="screenshot-description">Demo login page working</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/25-file-upload.png">📤</div>
+        <div class="screenshot-img" data-src="screenshots/36-rds-data.png">💾</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">S3 File Upload</div>
-          <div class="screenshot-description">Log file upload triggering Lambda pipeline</div>
+          <div class="screenshot-label">36 - RDS Data</div>
+          <div class="screenshot-description">MySQL data in tables</div>
         </div>
       </div>
       <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/26-suspicious-detected.png">⚠️</div>
+        <div class="screenshot-img" data-src="screenshots/37-s3-upload-working.png">📤</div>
         <div class="screenshot-info">
-          <div class="screenshot-label">Suspicious Activity Detected</div>
-          <div class="screenshot-description">Lambda-processed report showing flagged accounts</div>
+          <div class="screenshot-label">37 - S3 Upload Working</div>
+          <div class="screenshot-description">File uploaded via app appearing in S3</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/38-suspicious-detection.png">⚠️</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">38 - Suspicious Detection</div>
+          <div class="screenshot-description">App showing detected suspicious accounts</div>
+        </div>
+      </div>
+      <div class="screenshot-card" onclick="openImage(this)">
+        <div class="screenshot-img" data-src="screenshots/39-lambda-processed-data.png">📂</div>
+        <div class="screenshot-info">
+          <div class="screenshot-label">39 - Lambda Output</div>
+          <div class="screenshot-description">Private S3 bucket with Lambda report</div>
         </div>
       </div>
     </div>
@@ -632,12 +780,12 @@
   <div class="instructions">
     <div class="instructions-title">📋 How to Add Your Screenshots</div>
     <ul class="instructions-list">
-      <li>Place your screenshot images in <span class="mono">/public/screenshots/</span> folder</li>
-      <li>Name them according to the numbering: <span class="mono">01-vpc-dashboard.png</span>, <span class="mono">02-subnets.png</span>, etc.</li>
+      <li>Place screenshots in <span class="mono">/public/screenshots/</span> folder</li>
+      <li>Follow naming: <span class="mono">01-vpc-overview.png</span>, <span class="mono">02-subnets.png</span>, etc.</li>
       <li>Supported formats: PNG, JPG, JPEG</li>
-      <li>Recommended resolution: 1920x1080 or higher for clarity</li>
-      <li>Images will auto-load when properly named and placed</li>
-      <li>Click any screenshot card to view full-screen version</li>
+      <li>Resolution: 1920x1080 or higher recommended</li>
+      <li>Images auto-load when properly named</li>
+      <li>Click any card for full-screen view</li>
     </ul>
   </div>
 
@@ -646,8 +794,8 @@
     <div class="upload-icon">📁</div>
     <div class="upload-text">
       <strong>Ready to document your deployment?</strong><br/>
-      Add your screenshots to <span class="mono">/public/screenshots/</span> and they'll appear above.<br/>
-      Each section is pre-configured with descriptive labels matching the assignment requirements.
+      Add screenshots to <span class="mono">/public/screenshots/</span> and they'll appear above.<br/>
+      Total required: 29 core + 4-10 bonus = ~35-40 screenshots
     </div>
   </div>
 
