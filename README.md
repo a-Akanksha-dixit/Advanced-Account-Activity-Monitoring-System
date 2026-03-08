@@ -1,6 +1,23 @@
 # Advanced Account Activity Monitoring System on AWS
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazonaws)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green?logo=node.js)
+![Elastic Beanstalk](https://img.shields.io/badge/AWS-ElasticBeanstalk-green)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-Jenkins-blue?logo=jenkins)
+![Architecture](https://img.shields.io/badge/Architecture-Event%20Driven-purple)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
 Scalable Event-Driven Web Application with Monitoring, Automation, and Secure Infrastructure
+# 🌍 Live Demo
+
+Application URL
+
+http://account-activity-monitor.us-east-1.elasticbeanstalk.com/
+
+Example endpoints
+
+/health  
+/api/activity  
+/api/summary
 
 ---
 
@@ -8,17 +25,36 @@ Scalable Event-Driven Web Application with Monitoring, Automation, and Secure In
 
 This project presents an **advanced implementation of the Account Activity Monitoring System originally developed in the Fundamental AWS assessment**, enhanced with additional cloud architecture capabilities and operational features. The application is a **Node.js web service deployed on AWS Elastic Beanstalk** that allows users to upload activity logs through a dashboard interface for analysis.
 
-Uploaded logs are stored in **Amazon S3 and processed through an event-driven pipeline using Amazon SQS, Amazon SNS, and AWS Lambda**, enabling automated log processing and suspicious activity detection. Processed results are persisted in **Amazon RDS for relational analytics and Amazon DynamoDB for metadata tracking**.
+Uploaded logs are stored in **Amazon S3 and processed through an event-driven pipeline using Amazon SQS, Amazon SNS, and AWS Lambda**, enabling automated log processing and suspicious activity detection. Processed results are persisted in **Amazon RDS for relational analytics**, while **Amazon DynamoDB is used to store security audit events such as S3 object deletion activity**, helping detect potential log tampering or unauthorized actions.
 
 The architecture follows **secure and scalable cloud design practices**, including private subnet database deployment, credential management with AWS Secrets Manager, and least-privilege IAM roles. Additional capabilities such as **CloudWatch monitoring, EventBridge scheduled analytics, and CI/CD automation with Jenkins** demonstrate a production-oriented cloud application built on top of the foundational system.
 
 ---
+# ⭐ Key Architecture Highlights
 
-## Architecture Evolution
+• Event-driven architecture using **S3, SQS, SNS, and Lambda**
+
+• **Secure multi-AZ VPC design** with public and private subnets
+
+• **Elastic Beanstalk deployment** for scalable Node.js backend
+
+• **RDS for relational analytics** and **DynamoDB for security audit events**
+
+• **CloudWatch monitoring, alarms, and dashboards**
+
+• **EventBridge scheduled analytics automation**
+
+• **CI/CD pipeline using Jenkins**
+
+• **Security-focused logging with S3 object deletion audit tracking**
+
+
+---
+# Architecture Evolution
 
 This project extends the **Fundamental AWS assignment** by enhancing the original monitoring system with additional cloud services, automation, and event-driven processing.
 
-**Architecture Progression**
+### Architecture Progression
 
 ```
 Fundamental Architecture
@@ -31,17 +67,15 @@ Advanced Architecture
 User → Elastic Beanstalk Dashboard
       ↓
       S3 (Logs Storage)
-      ↓
- SNS Topic        SQS Queue
-     ↓                ↓
- Notification     Log Processing
-     Lambda           Lambda
-        ↓               ↓
-    DynamoDB        Amazon RDS
-          ↓
-   EventBridge Scheduled Analytics
-          ↓
-      CloudWatch Monitoring
+
+      ├── ObjectCreated → SQS → Lambda (Log Processing) → RDS
+      │
+      └── ObjectRemoved → SNS → Lambda (Security Audit) → DynamoDB
+
+                     ↓
+              EventBridge Analytics
+                     ↓
+                 CloudWatch Monitoring
 ```
 
 ---
@@ -56,6 +90,7 @@ The system allows users to:
 * Process logs through an **event-driven architecture**
 * Compute **risk scores for suspicious behavior or password sharing**
 * Monitor system performance using centralized AWS monitoring services
+* Track **security-sensitive events such as log deletions**
 
 The architecture incorporates **secure networking, automation, monitoring, and scalable cloud services**.
 
@@ -84,7 +119,7 @@ The following diagram illustrates the high-level architecture of the system incl
 | Monitoring         | Amazon CloudWatch                                      |
 | Security           | IAM Roles, Security Groups                             |
 | Secrets Management | AWS Secrets Manager                                    |
-| CI/CD              | Jenkins                                         |
+| CI/CD              | Jenkins                                                |
 
 ---
 
@@ -154,23 +189,24 @@ The application includes a **web dashboard** where users can:
 
 # 📊 Event-Driven Processing Pipeline
 
+### 1️⃣ Log Processing Pipeline
+
 1. User uploads activity logs via the dashboard.
-
 2. Logs are stored in **Amazon S3**.
+3. S3 triggers **Amazon SQS**.
+4. A **Lambda function processes the log file**.
+5. Processed data updates **risk scores in Amazon RDS**.
 
-3. S3 triggers:
+### 2️⃣ Security Audit Pipeline
 
-   * **SNS Topic**
-   * **SQS Queue**
+To improve system security monitoring, **S3 ObjectRemoved events** are tracked.
 
-4. **Lambda functions process the events**
+1. When a log file is deleted from S3
+2. S3 triggers an **SNS Topic**
+3. A **Lambda function processes the deletion event**
+4. The event metadata is stored in **Amazon DynamoDB**
 
-5. Processed data:
-
-   * Updates **risk scores in Amazon RDS**
-   * Stores metadata in **Amazon DynamoDB**
-
-6. System logs and metrics are collected in **CloudWatch**.
+This enables **audit tracking of potentially suspicious actions such as log deletion or tampering**.
 
 ---
 
@@ -195,20 +231,23 @@ Configuration:
 
 ## Amazon DynamoDB
 
-Used for storing:
+DynamoDB is used as a **security audit store** for S3 object deletion events.
 
-* Activity metadata
-* Processed log records
-* Event tracking data
+Tracking deletion events helps detect:
 
-Example item:
+* Unauthorized log removal
+* Suspicious administrative activity
+* Potential evidence tampering
+
+Example record stored in DynamoDB:
 
 ```
-userId: user123
-timestamp: 1710001234
-riskScore: 78
-ipAddress: 192.168.1.10
-sourceFile: activity-log.json
+eventId: evt-10231
+eventType: OBJECT_DELETED
+bucketName: activity-logs-bucket
+objectKey: logs/user123/activity-log.json
+deletedAt: 2026-03-08T10:45:12Z
+sourceIP: 54.201.22.10
 ```
 
 ---
@@ -222,6 +261,7 @@ S3 is used to store uploaded activity logs.
 ✔ Versioning
 ✔ Lifecycle Policies
 ✔ Access Logging
+✔ Event Notifications (ObjectCreated and ObjectRemoved)
 
 ### Lifecycle Example
 
@@ -318,6 +358,7 @@ A centralized dashboard visualizes metrics from:
 * S3
 
 ---
+
 # 🔄 CI/CD Pipeline (Bonus)
 
 Continuous Integration and Deployment is implemented using **Jenkins**.
@@ -326,136 +367,50 @@ The pipeline automatically builds and deploys the application whenever changes a
 
 ### Pipeline Workflow
 
+```
 Developer Push
-↓
+      ↓
 Jenkins Pipeline Trigger
-↓
+      ↓
 Install Dependencies
-↓
+      ↓
 Build Application
-↓
+      ↓
 Deploy to Elastic Beanstalk
+```
 
 Jenkins securely manages AWS credentials and automates the deployment process, ensuring consistent and repeatable application releases.
 
 ---
+# 🧠 Skills Demonstrated
 
-# 📂 Repository Structure
+Cloud Architecture  
+• AWS VPC design (public/private subnets, security groups)  
+• Event-driven system architecture  
+• Multi-service AWS integration  
 
-```
-.
-├── server.js
-├── package.json
-├── routes/
-├── dashboard/
-├── lambda/
-│   ├ processLogs.js
-│   ├ notificationHandler.js
-│   └ scheduledAnalytics.js
-├── dynamodb/
-│   └ activityLogger.js
-├── secrets/
-│   └ secretsManager.js
-├── .github/workflows/
-├── docs/
-│   ├ architecture/
-│   │   └ advanced-architecture.png
-│   └ screenshots/
-└── README.md
-```
+Backend Development  
+• Node.js and Express API development  
+• Asynchronous log processing pipelines  
 
----
+Serverless Computing  
+• AWS Lambda event-driven processing  
+• EventBridge scheduled automation  
 
-# 📸 Screenshots & Proof
+Cloud Security  
+• IAM least-privilege roles  
+• Secrets Manager credential storage  
+• Private subnet database architecture  
 
-Screenshots demonstrating each completed task are available in:
+Monitoring & Operations  
+• CloudWatch dashboards and alarms  
+• Application and infrastructure logging  
 
-```
-docs/screenshots/
-```
-
-Examples include:
-
-* VPC configuration
-* Elastic Beanstalk deployment
-* RDS private subnet setup
-* S3 versioning and lifecycle policies
-* Event triggers (SNS/SQS)
-* Lambda processing
-* DynamoDB records
-* CloudWatch monitoring
-* CI/CD pipeline execution
+DevOps  
+• CI/CD pipeline implementation using Jenkins  
+• Automated deployment to Elastic Beanstalk
 
 ---
-
-# 🧪 Running the Application Locally
-
-Install dependencies:
-
-```
-npm install
-```
-
-Start development server:
-
-```
-npm run dev
-```
-
-Set environment variables:
-
-```
-DB_HOST=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=
-```
-
----
-
-# 🛡️ Security Best Practices
-
-* Database deployed in **private subnets**
-* IAM roles configured using **least privilege**
-* Secrets stored securely in **AWS Secrets Manager**
-* Security groups restrict database access to **Elastic Beanstalk only**
-* S3 access logging enabled for audit tracking
-
----
-
-# 💰 Cost Optimization
-
-The architecture is designed to operate within **AWS Free Tier where possible**:
-
-* `t3.micro` compute instances
-* DynamoDB on-demand capacity
-* Serverless Lambda execution
-* S3 lifecycle policies for storage cost reduction
-
----
-
-# ✅ Assignment Completion Checklist
-
-✔ Multi-AZ VPC with public and private subnets
-✔ Elastic Beanstalk application deployment
-✔ Auto-scaling configuration
-✔ Amazon RDS in private subnet
-✔ Automated RDS backups
-✔ Secure security group configuration
-✔ S3 bucket with versioning
-✔ Lifecycle policies for S3 storage
-✔ S3 event triggers for SNS and SQS
-✔ Lambda functions for event processing
-✔ DynamoDB metadata storage
-✔ Secrets Manager integration
-✔ EventBridge scheduled Lambda
-✔ CloudWatch monitoring and alarms
-✔ CloudWatch dashboard
-✔ S3 access logging
-✔ CI/CD pipeline using Jenkins
-
----
-
 # 🏁 Final Notes
 
 This project demonstrates **advanced AWS cloud architecture concepts**, including:
@@ -464,6 +419,7 @@ This project demonstrates **advanced AWS cloud architecture concepts**, includin
 * Scalable web application deployment
 * Secure infrastructure patterns
 * Automated monitoring and alerting
+* Security audit logging for destructive actions
 * Cost-optimized storage lifecycle
 * Continuous deployment using Jenkins CI/CD pipelines
 
