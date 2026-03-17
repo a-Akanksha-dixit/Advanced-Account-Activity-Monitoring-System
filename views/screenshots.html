@@ -1,867 +1,1211 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SecureWatch — Assignment Screenshots</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>AWS Infrastructure — Assignment Screenshots</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #050810;
-      --panel:     #0b0f1e;
-      --border:    #1a2240;
-      --accent:    #00e5ff;
-      --success:   #00e676;
-      --warn:      #ffb300;
-      --text:      #c8d8f0;
-      --text-dim:  #5a7099;
-      --glow:      0 0 20px rgba(0,229,255,0.15);
+      --bg: #0a0c10;
+      --surface: #111318;
+      --surface2: #181c24;
+      --border: #1e2430;
+      --accent: #00d4aa;
+      --accent2: #4f7cff;
+      --accent3: #ff6b6b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --done: #00d4aa;
     }
 
-    [data-theme="light"] {
-      --bg:        #f5f7fa;
-      --panel:     #ffffff;
-      --border:    #e1e8ed;
-      --accent:    #0284c7;
-      --success:   #059669;
-      --warn:      #ea580c;
-      --text:      #1e293b;
-      --text-dim:  #64748b;
-      --glow:      0 0 20px rgba(2,132,199,0.1);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    body::after {
+    /* Grid background */
+    body::before {
       content: '';
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px,
-        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
-      );
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
       pointer-events: none;
-      z-index: 9999;
-      opacity: 1;
-      transition: opacity 0.3s ease;
+      z-index: 0;
     }
 
-    [data-theme="light"] body::after {
-      opacity: 0;
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      position: relative;
+      z-index: 1;
     }
 
     /* Header */
     header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px; height: 64px;
-      background: var(--panel); border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .logo-icon {
-      width: 32px; height: 32px; background: var(--accent);
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       animation: pulse 3s ease-in-out infinite;
     }
+
     @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 8px var(--accent); }
-      50%       { box-shadow: 0 0 24px var(--accent); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px var(--accent);
+      }
+
+      50% {
+        box-shadow: 0 0 24px var(--accent);
+      }
     }
+
     .logo-text {
-      font-size: 20px; font-weight: 700; letter-spacing: 4px;
-      color: var(--accent); text-transform: uppercase;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-transform: uppercase;
     }
-    .logo-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+    }
 
     nav a {
-      color: var(--text-dim); text-decoration: none; font-size: 13px;
-      letter-spacing: 2px; text-transform: uppercase; padding: 6px 14px;
-      border: 1px solid transparent; border-radius: 2px; transition: all 0.2s;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      transition: all 0.2s;
     }
-    nav a:hover, nav a.active {
-      color: var(--accent); border-color: var(--accent);
-      background: rgba(0,229,255,0.05);
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(0, 229, 255, 0.05);
     }
-    .nav-links { display: flex; gap: 8px; align-items: center; }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
 
     .theme-toggle {
-      display: flex; align-items: center; gap: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
     .theme-toggle-label {
-      font-size: 10px; letter-spacing: 2px;
+      font-size: 10px;
+      letter-spacing: 2px;
       color: var(--text-dim);
     }
+
     .toggle-switch {
       position: relative;
-      width: 44px; height: 22px;
+      width: 44px;
+      height: 22px;
       background: var(--border);
       border-radius: 11px;
       cursor: pointer;
       transition: background 0.3s;
     }
+
     .toggle-switch:hover {
       background: var(--muted);
     }
+
     .toggle-slider {
       position: absolute;
-      top: 2px; left: 2px;
-      width: 18px; height: 18px;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
       background: var(--text);
       border-radius: 50%;
       transition: transform 0.3s, background 0.3s;
     }
+
     .toggle-switch.active .toggle-slider {
       transform: translateX(22px);
       background: var(--accent);
     }
 
-    /* Main */
-    main {
-      max-width: 1200px; margin: 0 auto; padding: 40px 24px;
-    }
-
+    /* ── Header ── */
     .page-header {
-      text-align: center; margin-bottom: 48px;
-    }
-    .page-title {
-      font-size: 36px; font-weight: 700; letter-spacing: 6px;
-      text-transform: uppercase; color: #fff; margin-bottom: 12px;
-    }
-    .page-subtitle {
-      font-size: 13px; letter-spacing: 2px; color: var(--text-dim);
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+      position: relative;
     }
 
-    /* Section */
+    .header-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    .page-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #fff 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .page-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 400;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Live App Banner ── */
+    .live-banner {
+      background: linear-gradient(135deg, #0d2b22 0%, #0d1f35 100%);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .live-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.3);
+      }
+    }
+
+    .live-banner-content h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .live-banner-content p {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .live-img-wrap {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .live-img-wrap img {
+      max-height: 160px;
+      max-width: 280px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 212, 170, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: block;
+    }
+
+    .live-img-wrap img:hover {
+      transform: scale(1.03);
+    }
+
+    .live-img-placeholder {
+      width: 240px;
+      height: 120px;
+      background: rgba(0, 212, 170, 0.05);
+      border: 1px dashed rgba(0, 212, 170, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Section ── */
     .section {
-      margin-bottom: 60px;
+      margin-bottom: 52px;
     }
+
     .section-header {
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 24px; padding-bottom: 12px;
-      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
     }
+
     .section-number {
-      width: 40px; height: 40px;
-      background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(0,229,255,0.05));
-      border: 1px solid var(--accent); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 18px; font-weight: 700; color: var(--accent);
+      width: 32px;
+      height: 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
     }
+
     .section-title {
-      flex: 1;
-      font-size: 20px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
     }
+
     .section-status {
-      padding: 4px 12px; border-radius: 2px; font-size: 11px;
-      letter-spacing: 2px; font-weight: 600;
+      margin-left: auto;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
     }
-    .status-done { background: rgba(0,230,118,0.15); color: var(--success); }
-    .status-pending { background: rgba(255,179,0,0.15); color: var(--warn); }
+
+    .status-done {
+      background: rgba(0, 212, 170, 0.12);
+      color: var(--done);
+      border: 1px solid rgba(0, 212, 170, 0.25);
+    }
 
     .section-description {
-      font-size: 14px; color: var(--text-dim); margin-bottom: 24px;
-      line-height: 1.8;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.6;
+      padding-left: 46px;
     }
 
-    /* Screenshot grid */
+    /* ── Grid ── */
     .screenshot-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
     }
 
+    /* ── Card ── */
     .screenshot-card {
-      background: var(--panel);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 10px;
       overflow: hidden;
-      transition: all 0.3s;
       cursor: pointer;
-    }
-    .screenshot-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--glow);
-      transform: translateY(-4px);
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
     }
 
-    .screenshot-img {
-      width: 100%; aspect-ratio: 16/9;
-      background: linear-gradient(135deg, rgba(0,229,255,0.03), rgba(255,59,92,0.03));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 48px; opacity: 0.3;
-      border-bottom: 1px solid var(--border);
+    .screenshot-card:hover {
+      border-color: rgba(0, 212, 170, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 212, 170, 0.1);
     }
-    .screenshot-img img {
-      width: 100%; height: 100%; object-fit: cover;
+
+    .screenshot-img-wrap {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screenshot-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      transition: transform 0.3s;
+    }
+
+    .screenshot-img-wrap img.loaded {
+      display: block;
+    }
+
+    .screenshot-card:hover .screenshot-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    .screenshot-placeholder {
+      font-size: 28px;
+      opacity: 0.3;
+      user-select: none;
+    }
+
+    .screenshot-number {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      padding: 2px 6px;
+      backdrop-filter: blur(4px);
     }
 
     .screenshot-info {
-      padding: 16px;
-    }
-    .screenshot-label {
-      font-size: 12px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .screenshot-description {
-      font-size: 13px; color: var(--text-dim); line-height: 1.6;
+      padding: 10px 12px 12px;
     }
 
-    /* Upload zone */
-    .upload-placeholder {
-      background: var(--panel);
-      border: 2px dashed var(--border);
-      border-radius: 4px;
-      padding: 40px 24px;
+    .screenshot-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .screenshot-description {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.4;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 92vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-inner img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+    }
+
+    .lightbox-caption {
+      margin-top: 16px;
       text-align: center;
     }
-    .upload-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
-    .upload-text {
-      font-size: 13px; color: var(--text-dim); line-height: 1.8;
-    }
-    .upload-text strong { color: var(--accent); }
 
-    /* Instructions */
-    .instructions {
-      background: rgba(0,229,255,0.04);
-      border-left: 3px solid var(--accent);
-      padding: 20px 24px;
-      margin: 24px 0;
-      border-radius: 2px;
-    }
-    .instructions-title {
-      font-size: 12px; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--accent);
-      margin-bottom: 12px;
-    }
-    .instructions-list {
-      font-size: 13px; color: var(--text-dim); line-height: 2;
-      list-style: none; padding: 0;
-    }
-    .instructions-list li::before {
-      content: '▸'; color: var(--accent); margin-right: 10px;
+    .lightbox-caption-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
     }
 
-    /* Modal for full-screen image */
-    .modal {
-      display: none;
-      position: fixed; inset: 0; z-index: 9999;
-      background: rgba(0,0,0,0.95);
-      align-items: center; justify-content: center;
-      padding: 20px;
+    .lightbox-caption-desc {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
     }
-    .modal.active { display: flex; }
-    .modal img {
-      max-width: 95%; max-height: 95%;
+
+    .lightbox-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--surface2);
       border: 1px solid var(--border);
-      box-shadow: 0 0 40px rgba(0,229,255,0.2);
+      border-radius: 50%;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .modal-close {
-      position: absolute; top: 24px; right: 24px;
-      color: var(--text); font-size: 32px; cursor: pointer;
-      padding: 8px 16px; border: 1px solid var(--border);
-      background: var(--panel); border-radius: 2px;
-      transition: all 0.2s;
-    }
-    .modal-close:hover { border-color: var(--accent); color: var(--accent); }
 
-    .mono { font-family: 'Share Tech Mono', monospace; }
-
-    .badge {
-      display: inline-block; padding: 3px 10px; border-radius: 2px;
-      font-size: 10px; letter-spacing: 2px; font-weight: 700;
-      text-transform: uppercase;
+    .lightbox-close:hover {
+      color: #fff;
+      border-color: var(--accent);
     }
-    .badge-primary { background: rgba(0,229,255,0.15); color: var(--accent); }
-    .badge-success { background: rgba(0,230,118,0.15); color: var(--success); }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 640px) {
+      .screenshot-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header-stats {
+        gap: 20px;
+      }
+
+      .live-img-wrap {
+        display: none;
+      }
+    }
   </style>
 </head>
+
 <body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon"></div>
+        <div>
+          <div class="logo-text">SecureWatch</div>
+          <div class="logo-sub">AWS Assignment Documentation</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="/">Dashboard</a>
+        <a href="/login">Demo Login</a>
+        <a href="/screenshots" class="active">Screenshots</a>
+      </nav>
+    </header>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon"></div>
-    <div>
-      <div class="logo-text">SecureWatch</div>
-      <div class="logo-sub">AWS Assignment Documentation</div>
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-tag">// AWS Infrastructure Documentation</div>
+      <div class="page-title">Assignment Screenshots</div>
+      <div class="page-subtitle">Complete Cloud Deployment Evidence</div>
+      <div class="header-stats">
+        <div class="stat"><span class="stat-num">30</span><span class="stat-label">Screenshots</span></div>
+        <div class="stat"><span class="stat-num">12</span><span class="stat-label">AWS Services</span></div>
+        <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Completed</span></div>
+      </div>
+    </div>
+
+    <!-- Live App Banner -->
+    <div class="live-banner">
+      <div class="live-dot"></div>
+      <div class="live-banner-content">
+        <h3>Live Application</h3>
+        <p>Security Dashboard — deployed on Elastic Beanstalk</p>
+      </div>
+      <div class="live-img-wrap" id="liveBannerWrap">
+        <div class="live-img-placeholder" id="livePlaceholder">dashboard.png</div>
+        <img id="liveBannerImg" src="dashboard.png" alt="Live Dashboard" style="display:none"
+          onclick="openLightbox('dashboard.png','Live Dashboard','Security dashboard running on AWS EBS')"
+          onload="this.style.display='block';document.getElementById('livePlaceholder').style.display='none'" />
+      </div>
+    </div>
+
+    <!-- ── Section 1: VPC ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-title">VPC & Networking</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">Custom VPC with public/private subnets across multiple AZs, route tables, and
+        Internet Gateway.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('01-vpc-overview.png','VPC Overview','VPC with CIDR block configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🌐</span>
+            <span class="screenshot-number">01</span>
+            <img src="01-vpc-overview.png" alt="VPC Overview" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">VPC Overview</div>
+            <div class="screenshot-description">VPC with CIDR block configured</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('02-subnets-multi-az.png','Subnets Multi-AZ','Public & private subnets in multiple AZs')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📍</span>
+            <span class="screenshot-number">02</span>
+            <img src="02-subnets-multi-az.png" alt="Subnets" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Subnets Multi-AZ</div>
+            <div class="screenshot-description">Public &amp; private subnets in multiple AZs</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('03-route-table-igw.png','Route Table & IGW','Route table & Internet Gateway')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🛣️</span>
+            <span class="screenshot-number">03</span>
+            <img src="03-route-table-igw.png" alt="Route Table" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Route Table &amp; IGW</div>
+            <div class="screenshot-description">Route table &amp; Internet Gateway</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 2: EBS ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-title">Elastic Beanstalk</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">Node.js app on Elastic Beanstalk with auto-scaling, environment variables, and
+        green health status.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('04-ebs-environment.png','EBS Environment','Elastic Beanstalk environment details')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">⚙️</span>
+            <span class="screenshot-number">04</span>
+            <img src="04-ebs-environment.png" alt="EBS Environment" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">EBS Environment</div>
+            <div class="screenshot-description">Elastic Beanstalk environment details</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('05-ebs-app-running.png','App Running','Web app running on EBS — live URL')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">✨</span>
+            <span class="screenshot-number">05</span>
+            <img src="05-ebs-app-running.png" alt="App Running" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">App Running</div>
+            <div class="screenshot-description">Web app running on EBS — live URL</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('06-ebs-autoscaling-rules.png','Auto-Scaling Rules','Auto-scaling configuration')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📈</span>
+            <span class="screenshot-number">06</span>
+            <img src="06-ebs-autoscaling-rules.png" alt="Auto-Scaling" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Auto-Scaling Rules</div>
+            <div class="screenshot-description">Auto-scaling configuration</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 3: RDS ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title">RDS Database</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">MySQL RDS in private subnet with automated backups, security group restricting
+        access to EBS only.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('07-rds-instance.png','RDS Instance','RDS instance details and status')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🗄️</span>
+            <span class="screenshot-number">07</span>
+            <img src="07-rds-instance.png" alt="RDS Instance" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">RDS Instance</div>
+            <div class="screenshot-description">RDS instance details and status</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('08-rds-private-subnet.png','RDS Private Subnet','RDS in private subnet — no public access')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔐</span>
+            <span class="screenshot-number">08</span>
+            <img src="08-rds-private-subnet.png" alt="RDS Private Subnet" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">RDS Private Subnet</div>
+            <div class="screenshot-description">RDS in private subnet — no public access</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('09-rds-backups.png','RDS Backups','Automated backups enabled')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">💾</span>
+            <span class="screenshot-number">09</span>
+            <img src="09-rds-backups.png" alt="RDS Backups" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">RDS Backups</div>
+            <div class="screenshot-description">Automated backups enabled</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('10-rds-security-group.png','RDS Security Group','Security group restricting access to port 3306')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔒</span>
+            <span class="screenshot-number">10</span>
+            <img src="10-rds-security-group.png" alt="RDS Security Group" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">RDS Security Group</div>
+            <div class="screenshot-description">Security group restricting access</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 4: S3 ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-title">S3 Buckets</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">S3 bucket with versioning, lifecycle policies, and event notifications triggering
+        SNS &amp; SQS.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('11-s3-bucket.png','S3 Bucket','S3 bucket created and configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🪣</span>
+            <span class="screenshot-number">11</span>
+            <img src="11-s3-bucket.png" alt="S3 Bucket" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">S3 Bucket</div>
+            <div class="screenshot-description">S3 bucket created and configured</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('12-s3-versioning.png','S3 Versioning','S3 versioning enabled')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔄</span>
+            <span class="screenshot-number">12</span>
+            <img src="12-s3-versioning.png" alt="S3 Versioning" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">S3 Versioning</div>
+            <div class="screenshot-description">S3 versioning enabled</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('13-s3-lifecycle-policy.png','S3 Lifecycle Policy','S3 lifecycle rules configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">♻️</span>
+            <span class="screenshot-number">13</span>
+            <img src="13-s3-lifecycle-policy.png" alt="S3 Lifecycle" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">S3 Lifecycle Policy</div>
+            <div class="screenshot-description">S3 lifecycle rules configured</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('14-s3-event-trigger.png','S3 Event Trigger','S3 triggers SNS &amp; SQS on upload')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔔</span>
+            <span class="screenshot-number">14</span>
+            <img src="14-s3-event-trigger.png" alt="S3 Event Trigger" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">S3 Event Trigger</div>
+            <div class="screenshot-description">S3 triggers SNS &amp; SQS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 5: SNS & SQS ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-title">SNS &amp; SQS</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">SNS topic and SQS queue configured to receive S3 event notifications and fan out
+        to Lambda.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card" onclick="openLightbox('15-sns-topic.png','SNS Topic','SNS topic configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📣</span>
+            <span class="screenshot-number">15</span>
+            <img src="15-sns-topic.png" alt="SNS Topic" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">SNS Topic</div>
+            <div class="screenshot-description">SNS topic configured</div>
+          </div>
+        </div>
+        <div class="screenshot-card" onclick="openLightbox('16-sqs-queue.png','SQS Queue','SQS queue configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📨</span>
+            <span class="screenshot-number">16</span>
+            <img src="16-sqs-queue.png" alt="SQS Queue" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">SQS Queue</div>
+            <div class="screenshot-description">SQS queue configured</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 6: Lambda ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">6</div>
+        <div class="section-title">Lambda Functions</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">Lambda function for log processing triggered by SQS/SNS, with least-privilege IAM
+        role.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('17-lambda-log-processing.png','Lambda Log Processing','Lambda log processing function code')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">λ</span>
+            <span class="screenshot-number">17</span>
+            <img src="17-lambda-log-processing.png" alt="Lambda" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Lambda Log Processing</div>
+            <div class="screenshot-description">Lambda log processing function</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('18-lambda-sns-subscription.png','Lambda SNS Subscription','Lambda subscribed to SNS topic')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">⚡</span>
+            <span class="screenshot-number">18</span>
+            <img src="18-lambda-sns-subscription.png" alt="Lambda SNS" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Lambda SNS Subscription</div>
+            <div class="screenshot-description">Lambda subscribed to SNS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 7: DynamoDB ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">7</div>
+        <div class="section-title">DynamoDB</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">DynamoDB table storing processed log records from Lambda function.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('19-dynamodb-table.png','DynamoDB Table','DynamoDB table created')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🗃️</span>
+            <span class="screenshot-number">19</span>
+            <img src="19-dynamodb-table.png" alt="DynamoDB Table" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">DynamoDB Table</div>
+            <div class="screenshot-description">DynamoDB table created</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('20-dynamodb-records.png','DynamoDB Records','Sample records in DynamoDB')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📋</span>
+            <span class="screenshot-number">20</span>
+            <img src="20-dynamodb-records.png" alt="DynamoDB Records" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">DynamoDB Records</div>
+            <div class="screenshot-description">Sample records in DynamoDB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 8: Secrets Manager & EBS Env Vars ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">8</div>
+        <div class="section-title">Secrets Manager &amp; Env Variables</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">Database credentials stored in Secrets Manager; EBS environment variables
+        reference secrets securely.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('21-secrets-manager.png','Secrets Manager','Database credentials in Secrets Manager')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔑</span>
+            <span class="screenshot-number">21</span>
+            <img src="21-secrets-manager.png" alt="Secrets Manager" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Secrets Manager</div>
+            <div class="screenshot-description">Database credentials in Secrets Manager</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('22-ebs-env-variables.png','EBS Env Variables','EBS environment variables referencing secrets')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔧</span>
+            <span class="screenshot-number">22</span>
+            <img src="22-ebs-env-variables.png" alt="EBS Env Vars" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">EBS Env Variables</div>
+            <div class="screenshot-description">EBS environment variables referencing secrets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 9: EventBridge & IAM ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">9</div>
+        <div class="section-title">EventBridge &amp; IAM</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">EventBridge scheduled rule triggering Lambda; IAM role with least-privilege
+        permissions.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('23-eventbridge-rule.png','EventBridge Rule','EventBridge scheduled Lambda trigger')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🕐</span>
+            <span class="screenshot-number">23</span>
+            <img src="23-eventbridge-rule.png" alt="EventBridge" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">EventBridge Rule</div>
+            <div class="screenshot-description">EventBridge scheduled Lambda</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('24-lambda-iam-role.png','Lambda IAM Role','Lambda IAM role with least privilege')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🛡️</span>
+            <span class="screenshot-number">24</span>
+            <img src="24-lambda-iam-role.png" alt="Lambda IAM Role" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Lambda IAM Role</div>
+            <div class="screenshot-description">Lambda IAM role (least privilege)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 10: CloudWatch ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">10</div>
+        <div class="section-title">CloudWatch Monitoring</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">CloudWatch logs, alarms, and centralized dashboard for EBS, RDS, Lambda, and S3.
+      </div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('25-cloudwatch-logs.png','CloudWatch Logs','CloudWatch logs from all services')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📊</span>
+            <span class="screenshot-number">25</span>
+            <img src="25-cloudwatch-logs.png" alt="CloudWatch Logs" onload="imgLoaded(this)" onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">CloudWatch Logs</div>
+            <div class="screenshot-description">CloudWatch logs</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('26-cloudwatch-alarms.png','CloudWatch Alarms','CloudWatch alarms configured')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🚨</span>
+            <span class="screenshot-number">26</span>
+            <img src="26-cloudwatch-alarms.png" alt="CloudWatch Alarms" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">CloudWatch Alarms</div>
+            <div class="screenshot-description">CloudWatch alarms</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('27-cloudwatch-dashboard.png','CloudWatch Dashboard','Centralized CloudWatch dashboard')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📈</span>
+            <span class="screenshot-number">27</span>
+            <img src="27-cloudwatch-dashboard.png" alt="CloudWatch Dashboard" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">CloudWatch Dashboard</div>
+            <div class="screenshot-description">Centralized CloudWatch dashboard</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 11: S3 Access Logging ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">11</div>
+        <div class="section-title">S3 Access Logging</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">S3 server access logging enabled for audit trail.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('28-s3-access-logging.png','S3 Access Logging','S3 access logging enabled')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">📝</span>
+            <span class="screenshot-number">28</span>
+            <img src="28-s3-access-logging.png" alt="S3 Access Logging" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">S3 Access Logging</div>
+            <div class="screenshot-description">S3 access logging enabled</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Section 12: CI/CD Jenkins ── -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-number">12</div>
+        <div class="section-title">CI/CD Pipeline — Jenkins</div>
+        <span class="section-status status-done">✓ DONE</span>
+      </div>
+      <div class="section-description">Jenkins pipeline automating build and deployment to Elastic Beanstalk on every
+        code push.</div>
+      <div class="screenshot-grid">
+        <div class="screenshot-card"
+          onclick="openLightbox('29-jenkins-pipeline.png','Jenkins Pipeline','Jenkins pipeline configuration')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">🔄</span>
+            <span class="screenshot-number">29</span>
+            <img src="29-jenkins-pipeline.png" alt="Jenkins Pipeline" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Jenkins Pipeline</div>
+            <div class="screenshot-description">Jenkins pipeline configuration</div>
+          </div>
+        </div>
+        <div class="screenshot-card"
+          onclick="openLightbox('30-jenkins-build-success.png','Jenkins Build Success','Successful Jenkins deployment')">
+          <div class="screenshot-img-wrap">
+            <span class="screenshot-placeholder">✅</span>
+            <span class="screenshot-number">30</span>
+            <img src="30-jenkins-build-success.png" alt="Jenkins Success" onload="imgLoaded(this)"
+              onerror="imgError(this)" />
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-label">Jenkins Build Success</div>
+            <div class="screenshot-description">Successful Jenkins deployment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+      <div class="lightbox-caption">
+        <div class="lightbox-caption-label" id="lightbox-label"></div>
+        <div class="lightbox-caption-desc" id="lightbox-desc"></div>
+      </div>
     </div>
   </div>
-  <nav class="nav-links">
-    <a href="/">Dashboard</a>
-    <a href="/login">Demo Login</a>
-    <a href="/screenshots" class="active">Screenshots</a>
-  </nav>
-  <div class="theme-toggle">
-    <span class="theme-toggle-label">🌙</span>
-    <div class="toggle-switch" id="theme-toggle" onclick="toggleTheme()">
-      <div class="toggle-slider"></div>
-    </div>
-    <span class="theme-toggle-label">☀️</span>
-  </div>
-</header>
 
-<main>
-  <div class="page-header">
-    <div class="page-title">📸 Assignment Screenshots</div>
-    <div class="page-subtitle">Complete AWS Infrastructure & Deployment Documentation</div>
-  </div>
-
-  <!-- Section 1: VPC (4 screenshots: 01-04) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">1</div>
-      <div class="section-title">VPC Configuration</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Created custom VPC with CIDR 10.0.0.0/16, one public subnet (10.0.1.0/24) for Elastic Beanstalk,
-      and one private subnet (10.0.2.0/24) for RDS. Internet Gateway attached to public subnet.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/01-vpc-overview.png">🌐</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">01 - VPC Overview</div>
-          <div class="screenshot-description">Custom VPC with CIDR 10.0.0.0/16</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/02-subnets.png">📍</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">02 - Subnets</div>
-          <div class="screenshot-description">Public (10.0.1.0/24) and private (10.0.2.0/24) subnets</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/03-internet-gateway.png">🔌</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">03 - Internet Gateway</div>
-          <div class="screenshot-description">IGW attached to VPC</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/04-route-tables.png">🛣️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">04 - Route Tables</div>
-          <div class="screenshot-description">Public route with IGW, private with local routes</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 2: RDS (3 screenshots: 05-07) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">2</div>
-      <div class="section-title">RDS Database</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      MySQL RDS instance (db.t3.micro) deployed in private subnet with no public access.
-      Security group allows inbound on port 3306 only from Elastic Beanstalk security group.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/05-rds-instance.png">🗄️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">05 - RDS Instance</div>
-          <div class="screenshot-description">MySQL instance in private subnet</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/06-rds-subnet-group.png">🔐</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">06 - RDS Subnet Group</div>
-          <div class="screenshot-description">DB subnet group showing private subnet</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/07-rds-security-group.png">🔒</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">07 - RDS Security Group</div>
-          <div class="screenshot-description">MySQL port 3306 restricted to EBS security group</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 3: EBS (5 screenshots: 08-12) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">3</div>
-      <div class="section-title">Elastic Beanstalk</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Node.js application deployed on Elastic Beanstalk in public subnet.
-      Environment variables configured for RDS connection and S3 bucket names.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/08-ebs-application.png">📦</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">08 - EBS Application</div>
-          <div class="screenshot-description">Elastic Beanstalk application created</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/09-ebs-environment.png">⚙️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">09 - EBS Environment</div>
-          <div class="screenshot-description">Environment with green health status</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/10-ebs-configuration.png">🔧</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">10 - EBS Configuration</div>
-          <div class="screenshot-description">Environment configuration showing VPC settings</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/11-ebs-security-group.png">🛡️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">11 - EBS Security Group</div>
-          <div class="screenshot-description">Security group attached to EBS instances</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/12-app-url-working.png">✨</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">12 - App Working</div>
-          <div class="screenshot-description">Live dashboard accessible via EBS URL</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 4: Security Groups (1 screenshot: 13) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">4</div>
-      <div class="section-title">Security Groups Configuration</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Security group configuration proving EBS can access RDS on port 3306.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/13-ebs-to-rds-sg.png">🔗</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">13 - EBS to RDS Access</div>
-          <div class="screenshot-description">RDS security group showing EBS SG as source</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 5: S3 (3 screenshots: 14-16) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">5</div>
-      <div class="section-title">S3 Buckets</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Public S3 bucket for log uploads with event notification to SQS. Bucket policy allows public read for static files.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/14-s3-public-bucket.png">🪣</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">14 - S3 Public Bucket</div>
-          <div class="screenshot-description">Log files uploaded from dashboard</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/15-s3-bucket-policy.png">📋</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">15 - Bucket Policy</div>
-          <div class="screenshot-description">Public read access for static files</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/16-s3-event-notification.png">🔔</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">16 - S3 Event Notification</div>
-          <div class="screenshot-description">ObjectCreated event triggers SQS message</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 6: SQS (2 screenshots: 17-18) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">6</div>
-      <div class="section-title">SQS Queue</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Standard SQS queue receiving S3 event notifications.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/17-sqs-queue.png">📨</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">17 - SQS Queue</div>
-          <div class="screenshot-description">Standard queue receiving S3 events</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/18-sqs-messages.png">💬</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">18 - SQS Messages</div>
-          <div class="screenshot-description">Messages received after S3 upload (optional)</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 7: Lambda (3 screenshots: 19-21) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">7</div>
-      <div class="section-title">Lambda Function</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Lambda function triggered by SQS, processing security logs and writing reports to private S3.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/19-lambda-function.png">λ</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">19 - Lambda Function</div>
-          <div class="screenshot-description">Node.js function code</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/20-lambda-trigger.png">⚡</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">20 - Lambda Trigger</div>
-          <div class="screenshot-description">SQS trigger configuration</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/21-lambda-test-execution.png">🧪</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">21 - Lambda Execution</div>
-          <div class="screenshot-description">Test execution or recent invocations</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 8: CloudWatch Lambda (2 screenshots: 22-23) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">8</div>
-      <div class="section-title">CloudWatch — Lambda Logs</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      CloudWatch Logs capturing Lambda execution and processing logic.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/22-cloudwatch-lambda-logs.png">📊</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">22 - CloudWatch Lambda Logs</div>
-          <div class="screenshot-description">Lambda execution logs</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/23-lambda-log-details.png">📝</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">23 - Log Details</div>
-          <div class="screenshot-description">Detailed log entry showing processing logic</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 9: CloudWatch EBS (2 screenshots: 24-25) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">9</div>
-      <div class="section-title">CloudWatch — EBS Monitoring</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      CloudWatch metrics and alarms for Elastic Beanstalk environment.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/24-cloudwatch-ebs-metrics.png">📈</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">24 - EBS Metrics</div>
-          <div class="screenshot-description">CPU, network, and request metrics</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/25-cloudwatch-ebs-alarm.png">🚨</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">25 - EBS CPU Alarm</div>
-          <div class="screenshot-description">CPU utilization alarm</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 10: CloudWatch RDS (2 screenshots: 26-27) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">10</div>
-      <div class="section-title">CloudWatch — RDS Monitoring</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      CloudWatch metrics and alarms for RDS database.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/26-cloudwatch-rds-metrics.png">💾</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">26 - RDS Metrics</div>
-          <div class="screenshot-description">CPU, connections, and IOPS</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/27-cloudwatch-rds-alarm.png">⚠️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">27 - RDS CPU Alarm</div>
-          <div class="screenshot-description">CPU utilization alarm for RDS</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 11: CloudWatch Logs (2 screenshots: 28-29) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">11</div>
-      <div class="section-title">CloudWatch — EBS Environment Logs</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      CloudWatch Logs showing EBS application logs.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/28-cloudwatch-ebs-logs.png">📋</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">28 - EBS Logs</div>
-          <div class="screenshot-description">CloudWatch Logs for EBS environment</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/29-ebs-log-entries.png">📄</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">29 - Log Entries</div>
-          <div class="screenshot-description">Actual log entries from application</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 12: CI/CD (Optional - screenshots 30-37) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">12</div>
-      <div class="section-title">CI/CD Pipeline (Bonus)</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      Automated CI/CD pipeline using GitHub Actions or Jenkins for continuous deployment.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/30-cicd-workflow.png">🔄</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">30 - Workflow File</div>
-          <div class="screenshot-description">GitHub Actions or Jenkinsfile</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/31-cicd-secrets.png">🔐</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">31 - Secrets/Credentials</div>
-          <div class="screenshot-description">AWS credentials configured (blur values!)</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/32-cicd-success.png">✅</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">32 - Deployment Success</div>
-          <div class="screenshot-description">Successful build and deployment</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/33-deployment-logs.png">📜</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">33 - Deployment Logs</div>
-          <div class="screenshot-description">Deployment logs showing EBS update</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 13: Application Demo (screenshots 34-39) -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-number">13</div>
-      <div class="section-title">Working Application</div>
-      <span class="section-status status-done">✓ COMPLETED</span>
-    </div>
-    <div class="section-description">
-      End-to-end demonstration of the working security dashboard application.
-    </div>
-    <div class="screenshot-grid">
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/34-dashboard-live.png">📊</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">34 - Dashboard Live</div>
-          <div class="screenshot-description">Dashboard showing live statistics</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/35-login-demo.png">🔑</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">35 - Login Demo</div>
-          <div class="screenshot-description">Demo login page working</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/36-rds-data.png">💾</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">36 - RDS Data</div>
-          <div class="screenshot-description">MySQL data in tables</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/37-s3-upload-working.png">📤</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">37 - S3 Upload Working</div>
-          <div class="screenshot-description">File uploaded via app appearing in S3</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/38-suspicious-detection.png">⚠️</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">38 - Suspicious Detection</div>
-          <div class="screenshot-description">App showing detected suspicious accounts</div>
-        </div>
-      </div>
-      <div class="screenshot-card" onclick="openImage(this)">
-        <div class="screenshot-img" data-src="screenshots/39-lambda-processed-data.png">📂</div>
-        <div class="screenshot-info">
-          <div class="screenshot-label">39 - Lambda Output</div>
-          <div class="screenshot-description">Private S3 bucket with Lambda report</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Instructions -->
-  <div class="instructions">
-    <div class="instructions-title">📋 How to Add Your Screenshots</div>
-    <ul class="instructions-list">
-      <li>Place screenshots in <span class="mono">/public/screenshots/</span> folder</li>
-      <li>Follow naming: <span class="mono">01-vpc-overview.png</span>, <span class="mono">02-subnets.png</span>, etc.</li>
-      <li>Supported formats: PNG, JPG, JPEG</li>
-      <li>Resolution: 1920x1080 or higher recommended</li>
-      <li>Images auto-load when properly named</li>
-      <li>Click any card for full-screen view</li>
-    </ul>
-  </div>
-
-  <!-- Upload Placeholder -->
-  <div class="upload-placeholder">
-    <div class="upload-icon">📁</div>
-    <div class="upload-text">
-      <strong>Ready to document your deployment?</strong><br/>
-      Add screenshots to <span class="mono">/public/screenshots/</span> and they'll appear above.<br/>
-      Total required: 29 core + 4-10 bonus = ~35-40 screenshots
-    </div>
-  </div>
-
-</main>
-
-<!-- Full-screen modal -->
-<div class="modal" id="modal" onclick="closeImage()">
-  <div class="modal-close">✕</div>
-  <img src="" alt="Full screen" id="modal-img" onclick="event.stopPropagation()">
-</div>
-
-<script>
-  // Load screenshots if they exist
-  document.addEventListener('DOMContentLoaded', () => {
-    const imgs = document.querySelectorAll('.screenshot-img[data-src]');
-    imgs.forEach(div => {
-      const src = div.getAttribute('data-src');
-      const img = new Image();
-      img.onload = function() {
-        div.innerHTML = '';
-        div.appendChild(this);
-      };
-      img.onerror = function() {
-        // Keep the placeholder icon if image doesn't exist
-      };
-      img.src = '/' + src;
-    });
-  });
-
-  function openImage(card) {
-    const imgDiv = card.querySelector('.screenshot-img');
-    const img = imgDiv.querySelector('img');
-    if (img) {
-      document.getElementById('modal-img').src = img.src;
-      document.getElementById('modal').classList.add('active');
+  <script>
+    function imgLoaded(img) {
+      img.classList.add('loaded');
+      // hide placeholder emoji
+      const placeholder = img.closest('.screenshot-img-wrap').querySelector('.screenshot-placeholder');
+      if (placeholder) placeholder.style.display = 'none';
     }
-  }
+    function imgError(img) {
+      // keep placeholder visible, hide broken img
+      img.style.display = 'none';
+    }
 
-  function closeImage() {
-    document.getElementById('modal').classList.remove('active');
-  }
+    function openLightbox(src, label, desc) {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      lbImg.src = src;
+      document.getElementById('lightbox-label').textContent = label;
+      document.getElementById('lightbox-desc').textContent = desc;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({}); });
 
-  // ESC key to close
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeImage();
-  });
+    // make every card open the lightbox via its img src
+    document.querySelectorAll('.screenshot-card').forEach(card => {
+      const img = card.querySelector('img');
+      const label = card.querySelector('.screenshot-label').textContent;
+      const desc = card.querySelector('.screenshot-description').textContent;
+      if (img) {
+        card.addEventListener('click', () => openLightbox(img.src, label, desc));
+      }
+    });
+    // ESC key to close
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeImage();
+    });
 
-  // Theme toggle
-  function toggleTheme() {
-    const html = document.documentElement;
-    const toggle = document.getElementById('theme-toggle');
-    const currentTheme = html.getAttribute('data-theme') || 'dark';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    html.setAttribute('data-theme', newTheme);
-    toggle.classList.toggle('active', newTheme === 'light');
-    localStorage.setItem('theme', newTheme);
-  }
-
-  // Load saved theme
-  (function() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    const toggle = document.getElementById('theme-toggle');
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    toggle.classList.toggle('active', savedTheme === 'light');
-  })();
-</script>
+  </script>
 </body>
+
 </html>

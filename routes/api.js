@@ -68,11 +68,6 @@ router.post('/login', async (req, res) => {
       ]
     );
 
-    // Check for suspicious behavior after insert
-    if (status === 'success') {
-      await checkAndFlagSuspicious(username);
-    }
-
     return res.json({
       success: status === 'success',
       message: status === 'success'

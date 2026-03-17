@@ -14,9 +14,16 @@ const dbConfig = {
     connectTimeout: 10000,
 };
 
+
 async function initializeDatabase() {
-    pool = mysql.createPool(dbConfig);
-    const conn = await pool.getConnection();
+    try {
+        pool = mysql.createPool(dbConfig);
+        const conn = await pool.getConnection();
+    } catch(err) {
+        console.log("config:", dbConfig);
+        throw err;
+    }
+    
     console.log("✅ Connected to MySQL database");
 
     await conn.query(`CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\``);
