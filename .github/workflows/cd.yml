@@ -37,5 +37,5 @@ jobs:
         application_name: demo-account-activity-monitor
         environment_name: Demo-account-activity-monitor-env-1
         region: us-east-1
-        version_label: github-${{ github.run_number }}
+        version_label: github-${{ github.run_id }}
         deployment_package: app.zip
