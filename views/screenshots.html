@@ -272,10 +272,10 @@
       border-radius: 50%;
       flex-shrink: 0;
       box-shadow: 0 0 12px var(--accent);
-      animation: pulse 2s infinite;
+      animation: blink 2s infinite;
     }
 
-    @keyframes pulse {
+    @keyframes blink {
 
       0%,
       100% {
@@ -615,11 +615,13 @@
       <div class="live-dot"></div>
       <div class="live-banner-content">
         <h3>Live Application</h3>
-        <p>Security Dashboard — deployed on Elastic Beanstalk</p>
+        <p>Security Dashboard — deployed on Elastic Beanstalk via GitHub Actions</p>
       </div>
       <div class="live-img-wrap" id="liveBannerWrap">
         <div class="live-img-placeholder" id="livePlaceholder">dashboard.png</div>
-        <img id="liveBannerImg" src="dashboard.png" alt="Live Dashboard" style="display:none"
+        <img id="liveBannerImg"
+          src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/dashboard.png"
+          alt="Live Dashboard" style="display:none"
           onclick="openLightbox('dashboard.png','Live Dashboard','Security dashboard running on AWS EBS')"
           onload="this.style.display='block';document.getElementById('livePlaceholder').style.display='none'" />
       </div>
@@ -629,7 +631,7 @@
     <div class="section">
       <div class="section-header">
         <div class="section-number">1</div>
-        <div class="section-title">VPC & Networking</div>
+        <div class="section-title">VPC &amp; Networking</div>
         <span class="section-status status-done">✓ DONE</span>
       </div>
       <div class="section-description">Custom VPC with public/private subnets across multiple AZs, route tables, and
@@ -640,7 +642,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🌐</span>
             <span class="screenshot-number">01</span>
-            <img src="01-vpc-overview.png" alt="VPC Overview" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/01-vpc-overview.png"
+              alt="VPC Overview" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">VPC Overview</div>
@@ -652,7 +655,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📍</span>
             <span class="screenshot-number">02</span>
-            <img src="02-subnets-multi-az.png" alt="Subnets" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/02-subnets-multi-az.png"
+              alt="Subnets" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Subnets Multi-AZ</div>
@@ -664,7 +669,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🛣️</span>
             <span class="screenshot-number">03</span>
-            <img src="03-route-table-igw.png" alt="Route Table" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/03-route-table-igw.png"
+              alt="Route Table" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Route Table &amp; IGW</div>
@@ -689,7 +696,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">⚙️</span>
             <span class="screenshot-number">04</span>
-            <img src="04-ebs-environment.png" alt="EBS Environment" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/04-ebs-environment.png"
+              alt="EBS Environment" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">EBS Environment</div>
@@ -701,7 +710,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">✨</span>
             <span class="screenshot-number">05</span>
-            <img src="05-ebs-app-running.png" alt="App Running" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/05-ebs-app-running.png"
+              alt="App Running" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">App Running</div>
@@ -713,8 +724,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📈</span>
             <span class="screenshot-number">06</span>
-            <img src="06-ebs-autoscaling-rules.png" alt="Auto-Scaling" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/06-ebs-autoscaling-rules.png"
+              alt="Auto-Scaling" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Auto-Scaling Rules</div>
@@ -739,7 +751,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🗄️</span>
             <span class="screenshot-number">07</span>
-            <img src="07-rds-instance.png" alt="RDS Instance" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/07-rds-instance.png"
+              alt="RDS Instance" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">RDS Instance</div>
@@ -751,8 +764,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔐</span>
             <span class="screenshot-number">08</span>
-            <img src="08-rds-private-subnet.png" alt="RDS Private Subnet" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/08-rds-private-subnet.png"
+              alt="RDS Private Subnet" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">RDS Private Subnet</div>
@@ -764,7 +778,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">💾</span>
             <span class="screenshot-number">09</span>
-            <img src="09-rds-backups.png" alt="RDS Backups" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/09-rds-backups.png"
+              alt="RDS Backups" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">RDS Backups</div>
@@ -776,8 +791,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔒</span>
             <span class="screenshot-number">10</span>
-            <img src="10-rds-security-group.png" alt="RDS Security Group" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/10-rds-security-group.png"
+              alt="RDS Security Group" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">RDS Security Group</div>
@@ -802,7 +818,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🪣</span>
             <span class="screenshot-number">11</span>
-            <img src="11-s3-bucket.png" alt="S3 Bucket" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/11-s3-bucket.png"
+              alt="S3 Bucket" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">S3 Bucket</div>
@@ -814,7 +831,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔄</span>
             <span class="screenshot-number">12</span>
-            <img src="12-s3-versioning.png" alt="S3 Versioning" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/12-s3-versioning.png"
+              alt="S3 Versioning" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">S3 Versioning</div>
@@ -826,8 +845,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">♻️</span>
             <span class="screenshot-number">13</span>
-            <img src="13-s3-lifecycle-policy.png" alt="S3 Lifecycle" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/13-s3-lifecycle-policy.png"
+              alt="S3 Lifecycle" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">S3 Lifecycle Policy</div>
@@ -839,8 +859,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔔</span>
             <span class="screenshot-number">14</span>
-            <img src="14-s3-event-trigger.png" alt="S3 Event Trigger" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/14-s3-event-trigger.png"
+              alt="S3 Event Trigger" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">S3 Event Trigger</div>
@@ -864,7 +885,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📣</span>
             <span class="screenshot-number">15</span>
-            <img src="15-sns-topic.png" alt="SNS Topic" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/15-sns-topic.png"
+              alt="SNS Topic" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">SNS Topic</div>
@@ -875,7 +897,8 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📨</span>
             <span class="screenshot-number">16</span>
-            <img src="16-sqs-queue.png" alt="SQS Queue" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/16-sqs-queue.png"
+              alt="SQS Queue" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">SQS Queue</div>
@@ -900,7 +923,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">λ</span>
             <span class="screenshot-number">17</span>
-            <img src="17-lambda-log-processing.png" alt="Lambda" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/17-lambda-log-processing.png"
+              alt="Lambda" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Lambda Log Processing</div>
@@ -912,8 +937,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">⚡</span>
             <span class="screenshot-number">18</span>
-            <img src="18-lambda-sns-subscription.png" alt="Lambda SNS" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/18-lambda-sns-subscription.png"
+              alt="Lambda SNS" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Lambda SNS Subscription</div>
@@ -937,7 +963,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🗃️</span>
             <span class="screenshot-number">19</span>
-            <img src="19-dynamodb-table.png" alt="DynamoDB Table" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/19-dynamodb-table.png"
+              alt="DynamoDB Table" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">DynamoDB Table</div>
@@ -949,8 +977,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📋</span>
             <span class="screenshot-number">20</span>
-            <img src="20-dynamodb-records.png" alt="DynamoDB Records" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/20-dynamodb-records.png"
+              alt="DynamoDB Records" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">DynamoDB Records</div>
@@ -975,7 +1004,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔑</span>
             <span class="screenshot-number">21</span>
-            <img src="21-secrets-manager.png" alt="Secrets Manager" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/21-secrets-manager.png"
+              alt="Secrets Manager" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Secrets Manager</div>
@@ -987,7 +1018,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🔧</span>
             <span class="screenshot-number">22</span>
-            <img src="22-ebs-env-variables.png" alt="EBS Env Vars" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/22-ebs-env-variables.png"
+              alt="EBS Env Vars" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">EBS Env Variables</div>
@@ -1012,7 +1045,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🕐</span>
             <span class="screenshot-number">23</span>
-            <img src="23-eventbridge-rule.png" alt="EventBridge" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/23-eventbridge-rule.png"
+              alt="EventBridge" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">EventBridge Rule</div>
@@ -1024,7 +1059,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🛡️</span>
             <span class="screenshot-number">24</span>
-            <img src="24-lambda-iam-role.png" alt="Lambda IAM Role" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/24-lambda-iam-role.png"
+              alt="Lambda IAM Role" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">Lambda IAM Role</div>
@@ -1049,7 +1086,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📊</span>
             <span class="screenshot-number">25</span>
-            <img src="25-cloudwatch-logs.png" alt="CloudWatch Logs" onload="imgLoaded(this)" onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/25-cloudwatch-logs.png"
+              alt="CloudWatch Logs" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">CloudWatch Logs</div>
@@ -1061,8 +1100,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">🚨</span>
             <span class="screenshot-number">26</span>
-            <img src="26-cloudwatch-alarms.png" alt="CloudWatch Alarms" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/26-cloudwatch-alarms.png"
+              alt="CloudWatch Alarms" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">CloudWatch Alarms</div>
@@ -1074,8 +1114,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📈</span>
             <span class="screenshot-number">27</span>
-            <img src="27-cloudwatch-dashboard.png" alt="CloudWatch Dashboard" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/27-cloudwatch-dashboard.png"
+              alt="CloudWatch Dashboard" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">CloudWatch Dashboard</div>
@@ -1099,8 +1140,9 @@
           <div class="screenshot-img-wrap">
             <span class="screenshot-placeholder">📝</span>
             <span class="screenshot-number">28</span>
-            <img src="28-s3-access-logging.png" alt="S3 Access Logging" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/28-s3-access-logging.png"
+              alt="S3 Access Logging" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
             <div class="screenshot-label">S3 Access Logging</div>
@@ -1110,40 +1152,48 @@
       </div>
     </div>
 
-    <!-- ── Section 12: CI/CD Jenkins ── -->
+    <!-- ── Section 12: CI/CD — GitHub Actions ── -->
     <div class="section">
       <div class="section-header">
         <div class="section-number">12</div>
-        <div class="section-title">CI/CD Pipeline — Jenkins</div>
+        <div class="section-title">CI/CD Pipeline — GitHub Actions</div>
         <span class="section-status status-done">✓ DONE</span>
       </div>
-      <div class="section-description">Jenkins pipeline automating build and deployment to Elastic Beanstalk on every
-        code push.</div>
+      <div class="section-description">
+        Two-workflow pipeline: <strong style="color:#e2e8f0">CI</strong> runs build &amp; tests on every PR across Node
+        18.x &amp; 20.x; <strong style="color:#e2e8f0">CD</strong> deploys to Elastic Beanstalk automatically on merge
+        to main.
+        AWS credentials stored as GitHub repository secrets.
+      </div>
       <div class="screenshot-grid">
         <div class="screenshot-card"
-          onclick="openLightbox('29-jenkins-pipeline.png','Jenkins Pipeline','Jenkins pipeline configuration')">
+          onclick="openLightbox('29-gha-ci-workflow.png','GitHub Actions — CI Workflow','CI workflow running build & tests on PR (Node 18.x & 20.x matrix)')">
           <div class="screenshot-img-wrap">
-            <span class="screenshot-placeholder">🔄</span>
+            <span class="screenshot-placeholder">🔁</span>
             <span class="screenshot-number">29</span>
-            <img src="29-jenkins-pipeline.png" alt="Jenkins Pipeline" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <span class="workflow-tag">CI</span>
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/29-gha-ci-workflow.png"
+              alt="GitHub Actions CI" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
-            <div class="screenshot-label">Jenkins Pipeline</div>
-            <div class="screenshot-description">Jenkins pipeline configuration</div>
+            <div class="screenshot-label">GitHub Actions — CI</div>
+            <div class="screenshot-description">Build &amp; test on PR (Node 18.x / 20.x matrix)</div>
           </div>
         </div>
         <div class="screenshot-card"
-          onclick="openLightbox('30-jenkins-build-success.png','Jenkins Build Success','Successful Jenkins deployment')">
+          onclick="openLightbox('30-gha-cd-deploy.png','GitHub Actions — CD Deploy','CD workflow deploying app.zip to Elastic Beanstalk on PR merge')">
           <div class="screenshot-img-wrap">
-            <span class="screenshot-placeholder">✅</span>
+            <span class="screenshot-placeholder">🚀</span>
             <span class="screenshot-number">30</span>
-            <img src="30-jenkins-build-success.png" alt="Jenkins Success" onload="imgLoaded(this)"
-              onerror="imgError(this)" />
+            <span class="workflow-tag">CD</span>
+            <img
+              src="https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/30-gha-cd-deploy.png"
+              alt="GitHub Actions CD" onload="imgLoaded(this)" onerror="imgError(this)" />
           </div>
           <div class="screenshot-info">
-            <div class="screenshot-label">Jenkins Build Success</div>
-            <div class="screenshot-description">Successful Jenkins deployment</div>
+            <div class="screenshot-label">GitHub Actions — CD</div>
+            <div class="screenshot-description">Deploy to EBS on merge to main</div>
           </div>
         </div>
       </div>
@@ -1166,19 +1216,16 @@
   <script>
     function imgLoaded(img) {
       img.classList.add('loaded');
-      // hide placeholder emoji
       const placeholder = img.closest('.screenshot-img-wrap').querySelector('.screenshot-placeholder');
       if (placeholder) placeholder.style.display = 'none';
     }
     function imgError(img) {
-      // keep placeholder visible, hide broken img
       img.style.display = 'none';
     }
 
     function openLightbox(src, label, desc) {
       const lb = document.getElementById('lightbox');
-      const lbImg = document.getElementById('lightbox-img');
-      lbImg.src = src;
+      document.getElementById('lightbox-img').src = src;
       document.getElementById('lightbox-label').textContent = label;
       document.getElementById('lightbox-desc').textContent = desc;
       lb.classList.add('open');
@@ -1190,21 +1237,6 @@
       document.body.style.overflow = '';
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox({}); });
-
-    // make every card open the lightbox via its img src
-    document.querySelectorAll('.screenshot-card').forEach(card => {
-      const img = card.querySelector('img');
-      const label = card.querySelector('.screenshot-label').textContent;
-      const desc = card.querySelector('.screenshot-description').textContent;
-      if (img) {
-        card.addEventListener('click', () => openLightbox(img.src, label, desc));
-      }
-    });
-    // ESC key to close
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeImage();
-    });
-
   </script>
 </body>
 

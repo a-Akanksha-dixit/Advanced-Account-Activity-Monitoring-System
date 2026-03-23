@@ -1,7 +1,8 @@
 # Account Activity Monitoring System — SecureWatch
 [![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazonaws)](http://account-activity-monitor.us-east-1.elasticbeanstalk.com/)
 [![Node.js](https://img.shields.io/badge/Node.js-Backend-green?logo=node.js)]()
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-Jenkins-blue?logo=jenkins)]()
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-black?logo=githubactions)](https://github.com/features/actions)
+[![CD](https://img.shields.io/badge/CD-GitHub%20Actions-black?logo=githubactions)](https://github.com/features/actions)
 [![License](https://img.shields.io/badge/License-MIT-blue)]()
 
 > Scalable event-driven log monitoring system on AWS — detecting suspicious account activity in real time.
@@ -14,10 +15,8 @@
 
 ## Preview
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](https://raw.githubusercontent.com/a-Akanksha-dixit/my-assets/main/screenshots/dashboard.png)
 > Dashboard showing log upload, demo login form, and live risk scores.
-
----
 
 ---
 
@@ -54,8 +53,8 @@
   │  scores  │    │ audit events │
   └──────────┘    └──────────────┘
 
-  CloudWatch ── Logs · Metrics · Alarms · Dashboard
-  Jenkins    ── Push → Build → Deploy to Beanstalk
+  CloudWatch     ── Logs · Metrics · Alarms · Dashboard
+  GitHub Actions ── Push → Build/Test → Deploy to Beanstalk
 ```
 
 ---
@@ -85,7 +84,7 @@ VPC (Multi-AZ)
 | Automation | EventBridge |
 | Monitoring | CloudWatch |
 | Security | IAM, Secrets Manager, VPC/Security Groups |
-| CI/CD | Jenkins |
+| CI/CD | GitHub Actions |
 
 ---
 
@@ -156,13 +155,25 @@ Flagged accounts are written to `suspicious_accounts` with a risk score + flag l
 
 ---
 
-## CI/CD
+## CI/CD — GitHub Actions
+
+Two workflows live in `.github/workflows/`:
+
+### CI — Build & Test (`ci.yml`)
+Triggered on every pull request targeting `main`. Runs a Node.js matrix build across **18.x** and **20.x**.
 
 ```
-Git Push → Jenkins → Install Deps → Build → Deploy to Beanstalk
+PR opened/updated → install deps → build → npm test (Node 18.x & 20.x)
 ```
 
-AWS credentials managed securely via Jenkins credential store.
+### CD — Deploy to Elastic Beanstalk (`cd.yml`)
+Triggered when a PR is **merged** into `main`. Zips the application and deploys to EBS using `einaregilsson/beanstalk-deploy`.
+
+```
+PR merged → checkout → install → build → zip app → deploy to EBS
+```
+
+AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`) are stored as GitHub repository secrets — no credentials in code.
 
 ---
 
